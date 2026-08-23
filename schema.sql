@@ -32,8 +32,7 @@ INSERT INTO genero (id, descripcion) VALUES
 
 CREATE TABLE metodo_pago (
     id             SMALLINT PRIMARY KEY,
-    descripcion    VARCHAR(40) NOT NULL UNIQUE,
-
+    descripcion    VARCHAR(40) NOT NULL UNIQUE
 );
 
 -- El valor 0 agrupa efectivo Y contra entrega en una sola
@@ -142,7 +141,6 @@ SELECT
     r.monto_compra,
     mp.descripcion               AS metodo_pago,
     r.metodo_pago_id,
-    mp.es_contraentrega,
     r.tiempo,
     n.descripcion                AS navegador,
     r.navegador_id,
