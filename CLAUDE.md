@@ -129,12 +129,13 @@ Actualiza esta tabla en el mismo commit que completa cada componente.
 | Bloque | Componente | Estado |
 |---|---|---|
 | 2 | Cuenta en DigitalOcean, Droplet 4 GB, firewall y acceso SSH para el Bloque 1 | Pendiente |
-| 1 | Infraestructura en el Droplet (Docker, Odoo, HTTPS, PostgreSQL accesible) | Pendiente |
-| 1 | ERP: módulos instalados y configurados (compañía, almacenes, impuestos) | Completado en local (`datos/01_configurar_erp.py`); falta servidor |
-| 1 | Datos maestros: productos (con imagen), clientes, proveedores | Completado en local (`datos/02_datos_maestros.py`): 60 productos, 80 clientes, 14 proveedores; falta servidor |
-| 1 | Empleados, cargos y departamentos | Completado en local (`datos/03_empleados.py`): 35 empleados, 6 cargos, 5 departamentos; falta servidor |
-| 1 | Ventas, cotizaciones, compras, materiales, facturas + 50 PDF | Completado en local (`datos/cargar_todo.py`): 150 ventas, 20 cotizaciones, 100 compras, 60 materiales, 250 facturas, 150 PDF; falta servidor |
-| 1 | Gestor documental (OCA `dms`) con documentos y etiquetas | Completado en local (`datos/09_gestor_documental.py`): 15 documentos, 3 carpetas, 12 etiquetas; falta servidor |
+| 2 | Despliegue en el Droplet (Docker, Odoo, HTTPS, PostgreSQL accesible) y carga de datos con `datos/cargar_todo.py` | Pendiente |
+| 2 | Evidencias de instalación, módulos y carga masiva en `PROYECTO/evidencias/` | Pendiente |
+| 1 | ERP: módulos instalados y configurados (compañía, almacenes, impuestos) | Completado en local (`datos/01_configurar_erp.py`) |
+| 1 | Datos maestros: productos (con imagen), clientes, proveedores | Completado en local (`datos/02_datos_maestros.py`): 60 productos, 80 clientes, 14 proveedores |
+| 1 | Empleados, cargos y departamentos | Completado en local (`datos/03_empleados.py`): 35 empleados, 6 cargos, 5 departamentos |
+| 1 | Ventas, cotizaciones, compras, materiales, facturas + 50 PDF | Completado en local (`datos/cargar_todo.py`): 150 ventas, 20 cotizaciones, 100 compras, 60 materiales, 250 facturas, 150 PDF |
+| 1 | Gestor documental (OCA `dms`) con documentos y etiquetas | Completado en local (`datos/09_gestor_documental.py`): 15 documentos, 3 carpetas, 12 etiquetas |
 | 1 | Consultas SQL de calificación | Completado (`sql/consultas_calificacion.sql`, secciones 0-7); el Bloque 2 agrega la sección 8 |
 | 2 | Tienda en línea: catálogo, carrito, impuestos, envío, pago, factura por correo | Pendiente |
 | 2 | Google Analytics 4: eventos, segmentos, exploraciones, audiencias | Pendiente |
