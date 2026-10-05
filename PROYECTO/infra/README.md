@@ -7,6 +7,7 @@ Odoo 18 Community + PostgreSQL 16 con Docker Compose. En el servidor se agrega C
 ```bash
 cp .env.example .env
 cp config/odoo.conf.example config/odoo.conf   # cambiar admin_passwd y poner workers = 0 (en local no hay proxy)
+sh obtener_addons.sh                           # módulos OCA (gestor documental) en ../addons/oca
 docker compose up -d db
 # Crear la base quetzalmart una sola vez (sin datos demo, en español):
 docker compose run --rm odoo odoo -d quetzalmart -i base --without-demo=all --load-language=es_419 --stop-after-init
@@ -21,7 +22,7 @@ Abrir http://localhost:8069 · usuario `admin` / contraseña `admin` (cambiarla 
 2. Dominio: `DOMAIN=<ip-con-guiones>.sslip.io` (sin registro) o un subdominio de DuckDNS apuntando a la IP.
 3. Cloud Firewall: abrir 80 y 443 a todo público; 22 y 5432 solo a las IPs del equipo / de la calificación.
 4. Si la imagen no trae Docker: `curl -fsSL https://get.docker.com | sh && sudo usermod -aG docker $USER`
-5. Clonar el repo, entrar a `PROYECTO/infra`, crear `.env` (con `PG_BIND=0.0.0.0` y `DOMAIN`) y `config/odoo.conf`.
+5. Clonar el repo, entrar a `PROYECTO/infra`, crear `.env` (con `PG_BIND=0.0.0.0` y `DOMAIN`) y `config/odoo.conf`, y ejecutar `sh obtener_addons.sh`.
 6. Crear la base como en el paso local y luego: `docker compose --profile prod up -d`
 7. Comprobar `https://<dominio>` y la conexión SQL externa:
    `psql "host=<ip> port=5432 dbname=quetzalmart user=odoo"`
@@ -31,6 +32,7 @@ Abrir http://localhost:8069 · usuario `admin` / contraseña `admin` (cambiarla 
 | Acción | Comando |
 |---|---|
 | Ver logs | `docker compose logs -f odoo` |
+| Actualizar módulos OCA | `sh obtener_addons.sh && docker compose restart odoo` |
 | Actualizar un módulo | `docker compose run --rm odoo odoo -d quetzalmart -u <modulo> --stop-after-init` |
 | Respaldo de la base | `docker compose exec db pg_dump -U odoo -Fc quetzalmart > quetzalmart_$(date +%F).dump` |
 | Restaurar | `docker compose exec -T db pg_restore -U odoo -d quetzalmart --clean < archivo.dump` |

@@ -5,6 +5,8 @@ PROYECTO/infra/config/odoo.conf
 
 # Generados (se regeneran con PROYECTO/datos/08_exportar_facturas.py)
 PROYECTO/facturas_pdf/
+# Módulos OCA (se descargan con PROYECTO/infra/obtener_addons.sh)
+PROYECTO/addons/oca/
 
 # Python
 __pycache__/
