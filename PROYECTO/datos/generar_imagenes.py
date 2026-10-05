@@ -1,4 +1,4 @@
-"""Genera las imágenes de producto en imagenes/productos/<QM-0001>.jpg.
+"""Genera las imágenes de productos y materiales en imagenes/productos/<QM-0001|MAT-0001>.jpg.
 
 Solo hace falta correrlo si cambia el catálogo; las imágenes resultantes se suben al repo
 para que la carga en el servidor no necesite Pillow ni las fuentes de Windows.
@@ -9,7 +9,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-from catalogo import CATEGORIAS, PRODUCTOS, codigo_producto
+from catalogo import CATEGORIAS, CATEGORIAS_MATERIAL, MATERIALES, PRODUCTOS, codigo_material, codigo_producto
 
 TAM = 800
 DESTINO = Path(__file__).with_name("imagenes") / "productos"
@@ -38,8 +38,7 @@ def texto_ajustado(dibujo, texto, fuente, ancho_max):
     return lineas + [actual]
 
 
-def generar(indice, categoria, nombre, simbolo):
-    nombre_categoria, fondo, _proveedor = CATEGORIAS[categoria]
+def generar(codigo, nombre_categoria, fondo, nombre, simbolo):
     img = Image.new("RGB", (TAM, TAM), fondo)
     dibujo = ImageDraw.Draw(img)
 
@@ -62,14 +61,16 @@ def generar(indice, categoria, nombre, simbolo):
     dibujo.text((40, TAM - 35), "QuetzalMart", font=marca, fill="#FFFFFF", anchor="lm")
     dibujo.text((TAM - 40, TAM - 35), nombre_categoria, font=ImageFont.truetype("segoeui.ttf", 26), fill="#FFFFFF", anchor="rm")
 
-    img.save(DESTINO / f"{codigo_producto(indice)}.jpg", quality=85, optimize=True)
+    img.save(DESTINO / f"{codigo}.jpg", quality=85, optimize=True)
 
 
 def main():
     DESTINO.mkdir(parents=True, exist_ok=True)
     for i, (categoria, nombre, simbolo, *_resto) in enumerate(PRODUCTOS):
-        generar(i, categoria, nombre, simbolo)
-    print(f"{len(PRODUCTOS)} imágenes en {DESTINO}")
+        generar(codigo_producto(i), *CATEGORIAS[categoria][:2], nombre, simbolo)
+    for i, (categoria, nombre, simbolo, *_resto) in enumerate(MATERIALES):
+        generar(codigo_material(i), *CATEGORIAS_MATERIAL[categoria][:2], nombre, simbolo)
+    print(f"{len(PRODUCTOS) + len(MATERIALES)} imágenes en {DESTINO}")
 
 
 if __name__ == "__main__":

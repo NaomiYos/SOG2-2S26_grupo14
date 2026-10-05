@@ -185,3 +185,154 @@ def clientes(cantidad_personas=60, cantidad_empresas=20):
             "etiqueta": etiqueta,
         })
     return resultado
+
+
+# ---------------------------------------------------------------------------
+# Materiales de operación (no se venden; las sucursales los compran y consumen)
+# ---------------------------------------------------------------------------
+
+# código: (nombre de subcategoría, color de fondo de la imagen, código de proveedor)
+CATEGORIAS_MATERIAL = {
+    "EMP": ("Empaque y despacho", "#FCE9D2", "P11"),
+    "OFI": ("Caja y oficina", "#E4E9F2", "P12"),
+    "LIN": ("Limpieza institucional", "#D6F2EF", "P08"),
+    "EQU": ("Equipo y mantenimiento", "#E9E4D8", "P13"),
+    "UNI": ("Uniformes y seguridad", "#F9E0E0", "P14"),
+}
+
+# (subcategoría, nombre, emoji de la imagen, costo Q, peso kg)
+MATERIALES = [
+    ("EMP", "Bolsa biodegradable mediana paquete 1000", "🛍️", 285.00, 8.0),
+    ("EMP", "Bolsa de papel kraft paquete 500", "🛍️", 340.00, 12.0),
+    ("EMP", "Caja de cartón corrugado paquete 25", "📦", 210.00, 15.0),
+    ("EMP", "Cinta de embalaje transparente 6 rollos", "📦", 96.00, 1.2),
+    ("EMP", "Film plástico para alimentos 300 m", "🧻", 145.00, 2.0),
+    ("EMP", "Bandeja de duroport para carnes 500 unidades", "🍱", 260.00, 3.0),
+    ("EMP", "Etiquetas para precios rollo 1000", "🏷️", 38.00, 0.3),
+    ("EMP", "Etiquetas de código de barras rollo 2000", "🏷️", 75.00, 0.5),
+    ("EMP", "Bolsa para hielo paquete 500", "🧊", 120.00, 2.0),
+    ("EMP", "Malla para frutas rollo", "🍊", 88.00, 1.0),
+    ("EMP", "Charola de cartón para huevos 100 unidades", "🥚", 150.00, 4.0),
+    ("EMP", "Sello de seguridad para bolsas 1000 unidades", "🔒", 64.00, 0.4),
+    ("OFI", "Rollo de papel térmico 80 mm caja 50", "🧾", 375.00, 10.0),
+    ("OFI", "Papel bond carta resma 500 hojas", "📄", 42.00, 2.5),
+    ("OFI", "Tóner para impresora láser", "🖨️", 650.00, 1.0),
+    ("OFI", "Bolígrafos azules caja 50", "🖊️", 85.00, 0.6),
+    ("OFI", "Folder manila carta caja 100", "📁", 95.00, 3.0),
+    ("OFI", "Archivador de palanca", "📂", 32.00, 1.0),
+    ("OFI", "Engrapadora de escritorio", "📎", 58.00, 0.4),
+    ("OFI", "Calculadora de escritorio", "🧮", 120.00, 0.3),
+    ("OFI", "Marcadores permanentes caja 12", "🖍️", 66.00, 0.3),
+    ("OFI", "Bolsa para depósito bancario 100 unidades", "💰", 110.00, 0.8),
+    ("OFI", "Libro de actas 300 folios", "📒", 75.00, 1.2),
+    ("OFI", "Detector de billetes falsos", "💵", 450.00, 0.5),
+    ("LIN", "Desinfectante industrial 5 galones", "🧴", 380.00, 20.0),
+    ("LIN", "Jabón líquido para manos 1 galón", "🧼", 95.00, 4.0),
+    ("LIN", "Papel toalla industrial 6 rollos", "🧻", 210.00, 6.0),
+    ("LIN", "Papel higiénico jumbo 12 rollos", "🧻", 260.00, 8.0),
+    ("LIN", "Bolsa para basura industrial 100 unidades", "🗑️", 175.00, 5.0),
+    ("LIN", "Trapeador industrial", "🧹", 68.00, 1.2),
+    ("LIN", "Escoba de cerdas duras", "🧹", 45.00, 0.8),
+    ("LIN", "Cubeta con exprimidor", "🪣", 230.00, 3.0),
+    ("LIN", "Guantes de nitrilo caja 100", "🧤", 85.00, 0.6),
+    ("LIN", "Atomizador 1 L", "🫧", 18.00, 0.15),
+    ("LIN", "Limpiavidrios 1 galón", "🪟", 72.00, 4.0),
+    ("LIN", "Desengrasante para cocina 1 galón", "🍳", 110.00, 4.0),
+    ("EQU", "Gas refrigerante R-404A cilindro", "❄️", 1450.00, 11.0),
+    ("EQU", "Termómetro digital para refrigeradores", "🌡️", 95.00, 0.1),
+    ("EQU", "Foco LED 18 W paquete 10", "💡", 280.00, 1.0),
+    ("EQU", "Batería para báscula", "🔋", 65.00, 0.2),
+    ("EQU", "Báscula digital 30 kg", "⚖️", 1250.00, 5.0),
+    ("EQU", "Carretilla de carga", "🛒", 980.00, 18.0),
+    ("EQU", "Canasta plástica para compras", "🧺", 45.00, 0.6),
+    ("EQU", "Carrito de supermercado", "🛒", 1650.00, 20.0),
+    ("EQU", "Lector de código de barras", "📟", 890.00, 0.4),
+    ("EQU", "Extintor PQS 10 lb", "🧯", 420.00, 7.0),
+    ("EQU", "Extensión eléctrica 10 m", "🔌", 110.00, 1.2),
+    ("EQU", "Kit de herramientas de mantenimiento", "🧰", 760.00, 6.0),
+    ("UNI", "Camisa polo con logo", "👕", 95.00, 0.3),
+    ("UNI", "Delantal de cocina", "🥼", 62.00, 0.2),
+    ("UNI", "Gorra con logo", "🧢", 48.00, 0.1),
+    ("UNI", "Redecilla para cabello 100 unidades", "🧢", 55.00, 0.2),
+    ("UNI", "Botas de seguridad", "🥾", 420.00, 1.5),
+    ("UNI", "Chaleco reflectivo", "🦺", 45.00, 0.2),
+    ("UNI", "Guantes de carga", "🧤", 35.00, 0.15),
+    ("UNI", "Faja lumbar", "🦺", 110.00, 0.4),
+    ("UNI", "Gafete de identificación 100 unidades", "🪪", 180.00, 0.5),
+    ("UNI", "Botiquín de primeros auxilios", "⛑️", 350.00, 2.0),
+    ("UNI", "Mascarilla desechable caja 50", "😷", 40.00, 0.3),
+    ("UNI", "Señal de piso mojado", "🚧", 85.00, 1.5),
+]
+
+
+def codigo_material(indice):
+    return f"MAT-{indice + 1:04d}"
+
+
+# ---------------------------------------------------------------------------
+# Recursos humanos
+# ---------------------------------------------------------------------------
+
+# código: nombre. ADM reutiliza el departamento "Administration" que crea Odoo.
+DEPARTAMENTOS = {
+    "ADM": "Administración",
+    "VEN": "Ventas",
+    "COM": "Compras",
+    "LOG": "Logística e Inventario",
+    "RRH": "Recursos Humanos",
+}
+
+# código: (nombre del cargo, departamento, plazas por sucursal GT/MX/SV)
+CARGOS = {
+    "GER": ("Gerente de Sucursal", "ADM", (1, 1, 1)),
+    "CAJ": ("Cajero(a)", "VEN", (3, 3, 3)),
+    "ASV": ("Asesor(a) de Ventas", "VEN", (4, 2, 2)),
+    "CMP": ("Comprador(a)", "COM", (2, 1, 1)),
+    "BOD": ("Bodeguero(a)", "LOG", (4, 2, 2)),
+    "ARH": ("Analista de Recursos Humanos", "RRH", (2, 1, 0)),
+}
+
+NOMBRES_F = ["Ana", "María", "Carmen", "Lucía", "Sofía", "Andrea", "Gabriela", "Valeria", "Daniela",
+             "Paola", "Mónica", "Isabel", "Rosa", "Elena", "Claudia", "Fernanda", "Karla", "Silvia"]
+NOMBRES_M = ["Luis", "José", "Carlos", "Jorge", "Miguel", "Fernando", "Ricardo", "Javier", "Roberto",
+             "Héctor", "Alejandro", "Diego", "Francisco", "Mario", "Sergio", "Óscar", "Pablo", "Raúl"]
+
+
+def _identificacion(rnd, pais, nombre, apellidos):
+    if pais == "gt":  # DPI
+        return f"{rnd.randint(1000, 3999)} {rnd.randint(10000, 99999)} {rnd.randint(101, 2299):04d}"
+    if pais == "mx":  # CURP simplificada
+        return f"{_slug(apellidos[:2]).upper()}{_slug(nombre[0]).upper()}{rnd.randint(700101, 991231)}H{rnd.randint(10, 99)}"
+    return f"0{rnd.randint(1000000, 9999999)}-{rnd.randint(0, 9)}"  # DUI
+
+
+def empleados():
+    """Lista determinista de 35 empleados repartidos por sucursal según CARGOS."""
+    rnd = random.Random(35)
+    resultado, usados = [], set()
+    for codigo_cargo, (_cargo, departamento, plazas) in CARGOS.items():
+        for sucursal, cantidad in zip(("GT", "MX", "SV"), plazas):
+            for _ in range(cantidad):
+                genero = rnd.choice(["female", "male"])
+                while True:
+                    nombre = rnd.choice(NOMBRES_F if genero == "female" else NOMBRES_M)
+                    apellidos = f"{rnd.choice(APELLIDOS)} {rnd.choice(APELLIDOS)}"
+                    if (nombre, apellidos) not in usados:
+                        break
+                usados.add((nombre, apellidos))
+                numero = len(resultado) + 1
+                pais = sucursal.lower()
+                resultado.append({
+                    "codigo": f"E{numero:03d}",
+                    "nombre": f"{nombre} {apellidos}",
+                    "genero": genero,
+                    "cargo": codigo_cargo,
+                    "departamento": departamento,
+                    "sucursal": sucursal,
+                    "correo": f"{_slug(nombre)}.{_slug(apellidos.split()[0])}{numero}@quetzalmart.com",
+                    "movil": TELEFONO[pais].format(rnd.randint(3000, 5999), rnd.randint(1000, 9999)),
+                    "identificacion": _identificacion(rnd, pais, nombre, apellidos),
+                    "nacimiento": f"{rnd.randint(1975, 2004)}-{rnd.randint(1, 12):02d}-{rnd.randint(1, 28):02d}",
+                    "estado_civil": rnd.choice(["single", "single", "married", "married", "cohabitant", "divorced"]),
+                })
+    return resultado
