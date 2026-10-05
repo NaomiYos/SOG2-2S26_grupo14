@@ -17,10 +17,10 @@ Abrir http://localhost:8069 · usuario `admin` / contraseña `admin` (cambiarla 
 
 ## 2. Servidor en la nube
 
-1. VM Ubuntu 24.04, mínimo 2 vCPU / 4 GB RAM / 30 GB disco (GCP `e2-medium`, AWS `t3.medium` o Azure `B2s`).
-2. IP estática y un registro DNS `A` del dominio hacia esa IP.
-3. Firewall: abrir 80 y 443 a todo público; 22 y 5432 solo a las IPs del equipo / de la calificación.
-4. Instalar Docker: `curl -fsSL https://get.docker.com | sh && sudo usermod -aG docker $USER`
+1. Droplet de DigitalOcean: imagen Marketplace **Docker on Ubuntu 24.04**, plan Basic 2 vCPU / 4 GB, región New York o San Francisco, acceso por llave SSH.
+2. Dominio: `DOMAIN=<ip-con-guiones>.sslip.io` (sin registro) o un subdominio de DuckDNS apuntando a la IP.
+3. Cloud Firewall: abrir 80 y 443 a todo público; 22 y 5432 solo a las IPs del equipo / de la calificación.
+4. Si la imagen no trae Docker: `curl -fsSL https://get.docker.com | sh && sudo usermod -aG docker $USER`
 5. Clonar el repo, entrar a `PROYECTO/infra`, crear `.env` (con `PG_BIND=0.0.0.0` y `DOMAIN`) y `config/odoo.conf`.
 6. Crear la base como en el paso local y luego: `docker compose --profile prod up -d`
 7. Comprobar `https://<dominio>` y la conexión SQL externa:

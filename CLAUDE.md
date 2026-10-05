@@ -68,7 +68,7 @@ El juego real de carpetas se entrega el día de la calificación, así que el ro
 |---|---|---|
 | ERP | Odoo **18.0 Community** (imagen Docker oficial `odoo:18.0`) | La documentación del curso apunta a 18.0 |
 | Base de datos | PostgreSQL 16 en el mismo servidor en la nube | Odoo solo funciona sobre PostgreSQL; el enunciado menciona MySQL/Oracle/SQL Server como ejemplos. Si el auxiliar exige otro motor, se replica la información a ese motor, nunca se cambia el de Odoo |
-| Nube | Una VM Linux (GCP / AWS / Azure) con Docker Compose y Caddy para HTTPS | Simple, barato y reproducible |
+| Nube | Droplet de DigitalOcean (Ubuntu 24.04 con Docker, 2 vCPU / 4 GB) con Docker Compose, Caddy para HTTPS y dominio `<ip>.sslip.io` | Simple, cubierto por créditos de estudiante y reproducible |
 | Sucursales | Una compañía con 3 almacenes: `GT` (central), `MX`, `SV` | Mantiene la operación consolidada para los reportes |
 | Localización | Guatemala, moneda GTQ, IVA 12 % | Sede central |
 | Gestor documental | Módulo OCA `dms` | `Documents` es exclusivo de Enterprise |
@@ -128,7 +128,8 @@ Actualiza esta tabla en el mismo commit que completa cada componente.
 
 | Bloque | Componente | Estado |
 |---|---|---|
-| 1 | Infraestructura en la nube (VM, Docker, HTTPS, PostgreSQL accesible) | En progreso |
+| 2 | Cuenta en DigitalOcean, Droplet 4 GB, firewall y acceso SSH para el Bloque 1 | Pendiente |
+| 1 | Infraestructura en el Droplet (Docker, Odoo, HTTPS, PostgreSQL accesible) | Pendiente |
 | 1 | ERP: módulos instalados y configurados (compañía, almacenes, impuestos) | Pendiente |
 | 1 | Datos maestros: productos (con imagen), clientes, proveedores | Pendiente |
 | 1 | Empleados, cargos y departamentos | Pendiente |
