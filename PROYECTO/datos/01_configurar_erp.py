@@ -23,6 +23,17 @@ COMPANIA = {
     "vat": "12345678",
 }
 
+DIARIOS = {
+    "INV": "Facturas de cliente",
+    "FACTU": "Facturas de proveedor",
+    "BNK1": "Banco",
+    "CSH1": "Efectivo",
+    "MISCE": "Operaciones varias",
+    "CABA": "Impuestos base de efectivo",
+    "CAMBI": "Diferencia cambiaria",
+    "STJ": "Valoración de inventario",
+}
+
 # código: (nombre del almacén, país, ciudad, dirección)
 SUCURSALES = {
     "GT": ("QuetzalMart Guatemala", "gt", "Ciudad de Guatemala", "6a. Avenida 10-25, Zona 1"),
@@ -76,6 +87,11 @@ def configurar_impuestos(odoo, compania):
         iva[uso] = ids[0]
     odoo.write("res.company", compania, {"account_sale_tax_id": iva["sale"], "account_purchase_tax_id": iva["purchase"]})
     print("IVA 12 % por defecto en ventas y compras")
+
+    # El plan contable crea los diarios en inglés; se traducen para facturas y reportes.
+    for codigo, nombre in DIARIOS.items():
+        odoo.write("account.journal", odoo.search("account.journal", [("code", "=", codigo), ("company_id", "=", compania)]), {"name": nombre})
+    print("Diarios contables en español")
 
 
 def configurar_almacenes(odoo, compania):
