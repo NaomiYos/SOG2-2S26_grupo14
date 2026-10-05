@@ -336,3 +336,28 @@ def empleados():
                     "estado_civil": rnd.choice(["single", "single", "married", "married", "cohabitant", "divorced"]),
                 })
     return resultado
+
+
+# ---------------------------------------------------------------------------
+# Gestor documental
+# ---------------------------------------------------------------------------
+
+# Empresas de outsourcing: código: (razón social, país, ciudad, dirección, servicio, cuota mensual Q, sucursal, inicio)
+OUTSOURCING = {
+    "S01": ("Seguridad Integral Centinela, S.A.", "gt", "Ciudad de Guatemala", "Avenida Bolívar 31-50, Zona 3",
+            "seguridad y vigilancia de instalaciones", 18500.00, "GT", "2026-01-01"),
+    "S02": ("Limpieza Profesional Brillo, S.A. de C.V.", "sv", "San Salvador", "Calle Arce 1215, Centro",
+            "limpieza y desinfección de áreas de venta y bodega", 6200.00, "SV", "2026-02-01"),
+    "S03": ("Transportes Rápidos del Sur, S.A. de C.V.", "mx", "Tapachula", "Carretera Costera Km 4.5",
+            "transporte y distribución de mercadería entre sucursales", 24000.00, "MX", "2026-03-01"),
+    "S04": ("Maya Tech Soporte Informático, S.A.", "gt", "Ciudad de Guatemala", "Diagonal 6 12-42, Zona 10",
+            "soporte técnico de puntos de venta, red y sistema ERP", 9800.00, "GT", "2026-04-01"),
+    "S05": ("Pérez & Ruiz Contadores Asociados, S.A.", "gt", "Ciudad de Guatemala", "5a. Avenida 5-55, Zona 14",
+            "contabilidad, planilla y asesoría fiscal", 7500.00, "GT", "2026-01-15"),
+}
+
+# Compras cuya factura del proveedor se digitaliza en el gestor documental.
+COMPRAS_CON_FACTURA_DIGITAL = ["compra_001", "compra_002", "compra_003", "compra_004", "compra_005"]
+
+# Cargos cuyo primer empleado (sede Guatemala) tiene su contrato en el gestor documental, y salario mensual Q.
+CONTRATOS_LABORALES = {"GER": 14500.00, "CAJ": 4200.00, "ASV": 4800.00, "CMP": 6500.00, "BOD": 4000.00}

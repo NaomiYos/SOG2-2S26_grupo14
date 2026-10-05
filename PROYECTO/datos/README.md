@@ -8,7 +8,7 @@ en local y contra el servidor, cambiando solo `.env`.
 
 ```bash
 cp .env.example .env      # ajustar URL, base, usuario y contraseña de Odoo
-python cargar_todo.py     # ejecuta 01 a 08 en orden (~15 min en local)
+python cargar_todo.py     # ejecuta 01 a 09 en orden (~15 min en local)
 ```
 
 Cada paso también se puede correr por separado (`python 05_compras.py`).
@@ -33,17 +33,21 @@ En Windows, si la consola muestra mal los acentos: `python -X utf8 <script>`.
 | `06_ventas.py` | 150 ventas (abr-oct 2026) a los 80 clientes, entregadas desde la sucursal del país del cliente y facturadas; ~80 % cobradas |
 | `07_cotizaciones.py` | 20 cotizaciones sin confirmar: 12 a clientes y 8 solicitudes de presupuesto a proveedores |
 | `08_exportar_facturas.py` | Exporta a `PROYECTO/facturas_pdf/` el PDF de cada factura de cliente publicada (omite las ya exportadas) |
+| `09_gestor_documental.py` | Instala el gestor documental OCA `dms`: carpetas, grupo de acceso, 12 etiquetas en 4 categorías y los 15 PDF de `PROYECTO/dms/documentos/`, cada uno también adjunto a su factura, empleado o empresa de outsourcing |
 | `cargar_todo.py` | Ejecuta todos los pasos anteriores en orden |
 | `generar_imagenes.py` | Regenera `imagenes/productos/*.jpg` de productos y materiales (solo Windows + `pip install pillow`); las imágenes ya están en el repo |
 | `generar_logo.py` | Regenera `imagenes/logo_quetzalmart.png` (solo Windows + Pillow) |
+| `generar_documentos.py` | Regenera los 15 PDF de `PROYECTO/dms/documentos/` con datos de Odoo (`pip install reportlab`); ya están en el repo |
 
 ## Base nueva
+
+El paso 09 necesita los módulos OCA descargados (`../infra/obtener_addons.sh`).
 
 Al crear una base desde cero (ver `../infra/README.md`) el usuario es `admin` / `admin`.
 Cambiar la contraseña en Odoo y ponerla en `ODOO_PASSWORD` antes de correr `cargar_todo.py`.
 
 ## Consultas SQL
 
-En la base, los nombres traducibles (productos, categorías, cargos, impuestos, diarios) se guardan como JSON:
-usar `name->>'en_US'` (o `coalesce(name->>'es_419', name->>'en_US')`). Los departamentos y el contacto
-del usuario administrador también existen en la base: excluir `Administrator` al contar empleados.
+En la base, los nombres traducibles (productos, categorías, cargos, departamentos, impuestos, diarios, etiquetas del gestor documental) se guardan como JSON:
+usar `name->>'en_US'` (o `coalesce(name->>'es_419', name->>'en_US')`). El empleado del usuario
+administrador también existe en la base: excluir `Administrator` al contar empleados.
