@@ -1,0 +1,17 @@
+; Copiar como odoo.conf (no se sube) y cambiar admin_passwd.
+[options]
+; Al agregar módulos (OCA o qm_) añadir aquí su ruta dentro de /mnt/extra-addons
+addons_path = /mnt/extra-addons
+data_dir = /var/lib/odoo
+admin_passwd = cambiar_esta_clave_maestra
+db_name = quetzalmart
+dbfilter = ^quetzalmart$
+list_db = False
+proxy_mode = True
+workers = 2
+max_cron_threads = 1
+gevent_port = 8072
+limit_time_cpu = 600
+limit_time_real = 1200
+limit_memory_soft = 1073741824
+limit_memory_hard = 1342177280

@@ -1,0 +1,57 @@
+# Odoo 18 Community + PostgreSQL 16 (+ Caddy con HTTPS en el servidor).
+# Local:     docker compose up -d
+# Servidor:  docker compose --profile prod up -d
+name: quetzalmart
+
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ../sql/init:/docker-entrypoint-initdb.d:ro
+    # PG_BIND=0.0.0.0 en el servidor para las consultas de la calificación
+    # (abrir el 5432 en el firewall solo a las IPs necesarias).
+    ports:
+      - "${PG_BIND:-127.0.0.1}:5432:5432"
+
+  odoo:
+    image: odoo:18.0
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      HOST: db
+      USER: ${PG_USER}
+      PASSWORD: ${PG_PASSWORD}
+    volumes:
+      - odoo-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ../addons:/mnt/extra-addons
+    ports:
+      - "127.0.0.1:8069:8069"
+      - "127.0.0.1:8072:8072"
+
+  caddy:
+    image: caddy:2
+    profiles: ["prod"]
+    restart: unless-stopped
+    depends_on:
+      - odoo
+    environment:
+      DOMAIN: ${DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+
+volumes:
+  pg-data:
+  odoo-data:
+  caddy-data:
