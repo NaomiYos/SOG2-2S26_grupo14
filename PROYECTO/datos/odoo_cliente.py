@@ -28,15 +28,29 @@ class Odoo:
             sys.exit(f"Faltan variables: {', '.join(faltan)}. Copie datos/.env.example como datos/.env")
         self.url = os.environ["ODOO_URL"].rstrip("/")
         self.db = os.environ["ODOO_DB"]
+        self.usuario = os.environ["ODOO_USER"]
         self.password = os.environ["ODOO_PASSWORD"]
         comun = xmlrpc.client.ServerProxy(f"{self.url}/xmlrpc/2/common")
-        self.uid = comun.authenticate(self.db, os.environ["ODOO_USER"], self.password, {})
+        self.uid = comun.authenticate(self.db, self.usuario, self.password, {})
         if not self.uid:
             sys.exit("Usuario o contraseña de Odoo incorrectos")
         self._modelos = xmlrpc.client.ServerProxy(f"{self.url}/xmlrpc/2/object", allow_none=True)
 
     def call(self, modelo, metodo, *args, **kwargs):
         return self._modelos.execute_kw(self.db, self.uid, self.password, modelo, metodo, list(args), kwargs)
+
+    def accion(self, modelo, metodo, *args, **kwargs):
+        """Ejecuta un botón/asistente cuya respuesta no se necesita.
+
+        Algunos métodos devuelven acciones con valores None que XML-RPC no puede serializar.
+        Ese error ocurre después de que Odoo guardó los cambios, así que se ignora.
+        """
+        try:
+            return self.call(modelo, metodo, *args, **kwargs)
+        except xmlrpc.client.Fault as error:
+            if "cannot marshal None" not in error.faultString:
+                raise
+            return None
 
     def search(self, modelo, dominio, **kwargs):
         return self.call(modelo, "search", dominio, **kwargs)

@@ -17,6 +17,7 @@ from datetime import date, timedelta
 
 from catalogo import CATEGORIAS, CATEGORIAS_MATERIAL, MATERIALES, PRODUCTOS, codigo_material, codigo_producto
 from odoo_cliente import Odoo
+from operaciones import pagar_factura, publicar_factura, validar_movimientos
 
 INICIO = date(2026, 4, 1)
 DIAS = 182
@@ -69,37 +70,19 @@ def plan_de_compras():
     return list(zip(plan, pagos))
 
 
-def recibir(odoo, compra):
-    pickings = odoo.search_read("stock.picking", [("purchase_id", "=", compra), ("state", "not in", ["done", "cancel"])], ["move_ids"])
-    for picking in pickings:
-        for move in odoo.search_read("stock.move", [("id", "in", picking["move_ids"])], ["product_uom_qty"]):
-            odoo.write("stock.move", move["id"], {"quantity": move["product_uom_qty"], "picked": True})
-        resultado = odoo.call("stock.picking", "button_validate", [picking["id"]])
-        if isinstance(resultado, dict):
-            raise SystemExit(f"La recepción {picking['id']} pidió un asistente inesperado: {resultado.get('res_model')}")
-
-
 def facturar(odoo, compra, fecha, referencia, pagada):
-    factura = odoo.search("account.move", [("invoice_origin", "=", referencia), ("move_type", "=", "in_invoice")])
-    if not factura:
+    dominio = [("invoice_origin", "=", referencia), ("move_type", "=", "in_invoice")]
+    if not odoo.search("account.move", dominio):
         odoo.call("purchase.order", "action_create_invoice", [compra])
-        factura = odoo.search("account.move", [("invoice_origin", "=", referencia), ("move_type", "=", "in_invoice")])
-    factura = factura[0]
-    datos = odoo.search_read("account.move", [("id", "=", factura)], ["state", "payment_state"])[0]
-    fecha_factura = fecha + timedelta(days=2)
-    if datos["state"] == "draft":
-        odoo.write("account.move", factura, {
-            "invoice_date": fecha_factura.isoformat(),
-            "ref": f"FAC-{referencia.replace('P', '')}-{fecha_factura:%m%d}",
-        })
-        odoo.call("account.move", "action_post", [factura])
-    if pagada and datos["payment_state"] in ("not_paid", False):
-        contexto = {"active_model": "account.move", "active_ids": [factura]}
-        asistente = odoo.call("account.payment.register", "create", {
-            "payment_date": (fecha_factura + timedelta(days=15)).isoformat(),
-            "journal_id": odoo.search("account.journal", [("code", "=", "BNK1")])[0],
-        }, context=contexto)
-        odoo.call("account.payment.register", "action_create_payments", [asistente], context=contexto)
+    factura = odoo.search("account.move", dominio)[0]
+    fecha_factura = fecha + timedelta(days=3)  # el día de la recepción
+    publicar_factura(odoo, factura, {
+        "invoice_date": fecha_factura.isoformat(),
+        "invoice_date_due": (fecha_factura + timedelta(days=30)).isoformat(),
+        "ref": f"FAC-{referencia.replace('P', '')}-{fecha_factura:%m%d}",
+    })
+    if pagada:
+        pagar_factura(odoo, factura, fecha_factura + timedelta(days=15), "BNK1")
 
 
 def main():
@@ -131,7 +114,7 @@ def main():
             odoo.call("purchase.order", "button_confirm", [compra])
             # Confirmar usa la fecha actual; se devuelve la fecha histórica de la compra.
             odoo.write("purchase.order", compra, {"date_approve": valores["date_order"], "date_order": valores["date_order"]})
-        recibir(odoo, compra)
+        validar_movimientos(odoo, [("purchase_id", "=", compra)], valores["date_planned"])
         facturar(odoo, compra, fecha, estado["name"], pagada)
         if n % 10 == 0:
             print(f"  {n}/{len(plan)} compras procesadas")
