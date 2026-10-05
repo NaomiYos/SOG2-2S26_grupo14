@@ -9,9 +9,10 @@ en local y contra el servidor, cambiando solo `.env`.
 ```bash
 cp .env.example .env      # ajustar URL, base, usuario y contraseña de Odoo
 python 01_configurar_erp.py
+python 02_datos_maestros.py
 ```
 
-Requiere Python 3.10+ sin dependencias externas. En Windows, si la consola muestra mal los acentos: `python -X utf8 <script>`.
+Los scripts de carga requieren Python 3.10+ sin dependencias externas. Usar `ODOO_URL=http://127.0.0.1:8069` en local: con `localhost` Windows intenta IPv6 primero y cada llamada tarda ~2 s. En Windows, si la consola muestra mal los acentos: `python -X utf8 <script>`.
 
 ## Scripts
 
@@ -19,3 +20,6 @@ Requiere Python 3.10+ sin dependencias externas. En Windows, si la consola muest
 |---|---|
 | `odoo_cliente.py` | Conexión compartida y `upsert` por External ID |
 | `01_configurar_erp.py` | Compañía QuetzalMart (GT, GTQ), módulos, plan contable GT con IVA 12 %, almacenes GT / MX / SV |
+| `catalogo.py` | Datos fuente: 10 categorías, 14 proveedores, 60 productos y generador determinista de 80 clientes |
+| `02_datos_maestros.py` | Etiquetas, categorías, proveedores, productos (imagen, EAN-13, precio, costo, peso, proveedor) y clientes |
+| `generar_imagenes.py` | Regenera `imagenes/productos/*.jpg` (solo Windows + `pip install pillow`); las imágenes ya están en el repo |
