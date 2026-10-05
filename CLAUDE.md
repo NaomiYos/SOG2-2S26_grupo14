@@ -22,7 +22,7 @@ PROYECTO/           Proyecto único QuetzalMart (35 pts). Enunciado: PROYECTO/Pr
   addons/           Módulos de Odoo: OCA (dms, etc.) y módulos propios con prefijo qm_
   datos/            Generadores y cargadores de datos masivos (Python, idempotentes)
   sql/              Consultas SQL para la calificación + scripts de inicialización
-  facturas_pdf/     Las 50+ facturas en PDF exportadas desde Odoo
+  facturas_pdf/     PDF de las facturas de cliente (generados con datos/08_exportar_facturas.py; no se suben)
   dms/              Documentos de ejemplo para el gestor documental (facturas, contratos)
   web/              Personalización de la tienda en línea y eventos GA4
   ga4/              Configuración documentada de Google Analytics (segmentos, audiencias, exploraciones)
@@ -133,7 +133,7 @@ Actualiza esta tabla en el mismo commit que completa cada componente.
 | 1 | ERP: módulos instalados y configurados (compañía, almacenes, impuestos) | Completado en local (`datos/01_configurar_erp.py`); falta servidor |
 | 1 | Datos maestros: productos (con imagen), clientes, proveedores | Completado en local (`datos/02_datos_maestros.py`): 60 productos, 80 clientes, 14 proveedores; falta servidor |
 | 1 | Empleados, cargos y departamentos | Completado en local (`datos/03_empleados.py`): 35 empleados, 6 cargos, 5 departamentos; falta servidor |
-| 1 | Ventas, cotizaciones, compras, materiales, facturas + 50 PDF | En progreso: 60 materiales y 100 compras con factura cargados (`datos/04_materiales.py`, `datos/05_compras.py`) |
+| 1 | Ventas, cotizaciones, compras, materiales, facturas + 50 PDF | Completado en local (`datos/cargar_todo.py`): 150 ventas, 20 cotizaciones, 100 compras, 60 materiales, 250 facturas, 150 PDF; falta servidor |
 | 1 | Gestor documental (OCA `dms`) con documentos y etiquetas | Pendiente |
 | 1 | Consultas SQL de calificación | Pendiente |
 | 2 | Tienda en línea: catálogo, carrito, impuestos, envío, pago, factura por correo | Pendiente |

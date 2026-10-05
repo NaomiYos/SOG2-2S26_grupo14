@@ -3,6 +3,9 @@
 *.env.local
 PROYECTO/infra/config/odoo.conf
 
+# Generados (se regeneran con PROYECTO/datos/08_exportar_facturas.py)
+PROYECTO/facturas_pdf/
+
 # Python
 __pycache__/
 *.pyc
