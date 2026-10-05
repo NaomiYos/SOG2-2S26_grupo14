@@ -130,7 +130,7 @@ Actualiza esta tabla en el mismo commit que completa cada componente.
 |---|---|---|
 | 2 | Cuenta en DigitalOcean, Droplet 4 GB, firewall y acceso SSH para el Bloque 1 | Pendiente |
 | 1 | Infraestructura en el Droplet (Docker, Odoo, HTTPS, PostgreSQL accesible) | Pendiente |
-| 1 | ERP: módulos instalados y configurados (compañía, almacenes, impuestos) | Pendiente |
+| 1 | ERP: módulos instalados y configurados (compañía, almacenes, impuestos) | Completado en local (`datos/01_configurar_erp.py`); falta servidor |
 | 1 | Datos maestros: productos (con imagen), clientes, proveedores | Pendiente |
 | 1 | Empleados, cargos y departamentos | Pendiente |
 | 1 | Ventas, cotizaciones, compras, materiales, facturas + 50 PDF | Pendiente |
