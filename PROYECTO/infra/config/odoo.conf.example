@@ -8,6 +8,7 @@ db_name = quetzalmart
 dbfilter = ^quetzalmart$
 list_db = False
 proxy_mode = True
+; En el servidor: 2 (websocket por el puerto 8072 vía Caddy). En local: 0, porque no hay proxy.
 workers = 2
 max_cron_threads = 1
 gevent_port = 8072

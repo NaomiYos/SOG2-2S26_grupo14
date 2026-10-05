@@ -6,7 +6,7 @@ Odoo 18 Community + PostgreSQL 16 con Docker Compose. En el servidor se agrega C
 
 ```bash
 cp .env.example .env
-cp config/odoo.conf.example config/odoo.conf   # cambiar admin_passwd
+cp config/odoo.conf.example config/odoo.conf   # cambiar admin_passwd y poner workers = 0 (en local no hay proxy)
 docker compose up -d db
 # Crear la base quetzalmart una sola vez (sin datos demo, en español):
 docker compose run --rm odoo odoo -d quetzalmart -i base --without-demo=all --load-language=es_419 --stop-after-init
