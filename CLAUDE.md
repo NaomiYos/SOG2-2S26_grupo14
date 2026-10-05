@@ -135,7 +135,7 @@ Actualiza esta tabla en el mismo commit que completa cada componente.
 | 1 | Empleados, cargos y departamentos | Completado en local (`datos/03_empleados.py`): 35 empleados, 6 cargos, 5 departamentos; falta servidor |
 | 1 | Ventas, cotizaciones, compras, materiales, facturas + 50 PDF | Completado en local (`datos/cargar_todo.py`): 150 ventas, 20 cotizaciones, 100 compras, 60 materiales, 250 facturas, 150 PDF; falta servidor |
 | 1 | Gestor documental (OCA `dms`) con documentos y etiquetas | Completado en local (`datos/09_gestor_documental.py`): 15 documentos, 3 carpetas, 12 etiquetas; falta servidor |
-| 1 | Consultas SQL de calificación | Pendiente |
+| 1 | Consultas SQL de calificación | Completado (`sql/consultas_calificacion.sql`, secciones 0-7); el Bloque 2 agrega la sección 8 |
 | 2 | Tienda en línea: catálogo, carrito, impuestos, envío, pago, factura por correo | Pendiente |
 | 2 | Google Analytics 4: eventos, segmentos, exploraciones, audiencias | Pendiente |
 | 2 | RPA UiPath | Pendiente |
