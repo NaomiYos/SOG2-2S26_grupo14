@@ -133,7 +133,7 @@ Actualiza esta tabla en el mismo commit que completa cada componente.
 | 1 | ERP: módulos instalados y configurados (compañía, almacenes, impuestos) | Completado en local (`datos/01_configurar_erp.py`); falta servidor |
 | 1 | Datos maestros: productos (con imagen), clientes, proveedores | Completado en local (`datos/02_datos_maestros.py`): 60 productos, 80 clientes, 14 proveedores; falta servidor |
 | 1 | Empleados, cargos y departamentos | Completado en local (`datos/03_empleados.py`): 35 empleados, 6 cargos, 5 departamentos; falta servidor |
-| 1 | Ventas, cotizaciones, compras, materiales, facturas + 50 PDF | En progreso: 60 materiales cargados (`datos/04_materiales.py`) |
+| 1 | Ventas, cotizaciones, compras, materiales, facturas + 50 PDF | En progreso: 60 materiales y 100 compras con factura cargados (`datos/04_materiales.py`, `datos/05_compras.py`) |
 | 1 | Gestor documental (OCA `dms`) con documentos y etiquetas | Pendiente |
 | 1 | Consultas SQL de calificación | Pendiente |
 | 2 | Tienda en línea: catálogo, carrito, impuestos, envío, pago, factura por correo | Pendiente |
