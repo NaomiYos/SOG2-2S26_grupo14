@@ -1,3 +1,20 @@
+# Secretos
 .env
+*.env.local
+PROYECTO/infra/config/odoo.conf
+
+# Python
 __pycache__/
 *.pyc
+.venv/
+venv/
+
+# Office / UiPath
+~$*
+.local/
+.screenshots/
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+.claude/settings.local.json
