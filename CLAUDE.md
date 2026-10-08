@@ -138,7 +138,7 @@ Actualiza esta tabla en el mismo commit que completa cada componente.
 | 1 | Gestor documental (OCA `dms`) con documentos y etiquetas | Completado en local (`datos/09_gestor_documental.py`): 15 documentos, 3 carpetas, 12 etiquetas |
 | 1 | Consultas SQL de calificación | Completado (`sql/consultas_calificacion.sql`, secciones 0-7); el Bloque 2 agrega la sección 8 |
 | 2 | Tienda en línea: catálogo, carrito, impuestos, envío, pago, factura por correo | Pendiente |
-| 2 | Google Analytics 4: eventos, segmentos, exploraciones, audiencias | Pendiente |
+| 2 | Google Analytics 4: eventos, segmentos, exploraciones, audiencias | En progreso (`ga4/configuracion.md`, sección *Estado*): eventos de comercio electrónico llegando con `addons/qm_ga4_ecommerce`; faltan audiencias, segmentos, exploraciones y exportes |
 | 2 | RPA UiPath | Pendiente |
 | 2 | Marketing: correo de campaña posterior a la compra | Pendiente |
 | — | Manuales 1, 2 y 3 | Pendiente |

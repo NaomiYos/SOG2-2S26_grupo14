@@ -6,6 +6,39 @@ Medición de comercio electrónico de la tienda de Odoo con GA4. Las capturas de
 > El ID de medición (`G-XXXXXXXXXX`) no es secreto (viaja en cada página), pero las credenciales de la cuenta de Google sí:
 > no se suben al repo. Al resto del equipo se le da acceso como *Lector* desde Administrar > Administración de acceso.
 
+## Estado (para quien continúe)
+
+| Parte | Estado |
+|---|---|
+Actualizado el 2026-10-08.
+
+| Parte | Estado |
+|---|---|
+| Propiedad GA4 y flujo web; ID de medición `G-34SH2SJWGK` en Odoo | Hecho |
+| Barra de cookies desactivada (consentimiento concedido) | Hecho |
+| Módulo `qm_ga4_ecommerce` instalado en el servidor | Hecho |
+| Eventos llegando a GA4 (peticiones `collect` en Chrome e Informes > Tiempo real) | Hecho |
+| `purchase` como evento clave | Hecho (GA4 lo marca por defecto) |
+| `begin_checkout` como evento clave | Pendiente: la lista de Eventos de una propiedad nueva tarda hasta 24 h; luego se marca con la estrella de su fila |
+| Tráfico con enlaces UTM y compras de prueba (sección 3) | En curso: enlaces enviados al grupo |
+| 3 audiencias, 1 personalizada (sección 6) | Pendiente: revisar en Administrar > Audiencias si ya existen; crearlas cuanto antes, solo cuentan usuarios desde su creación |
+| 3 segmentos de usuario y 5 de eventos (sección 4) | Pendiente |
+| 2 exploraciones (sección 5) | Pendiente: se ven vacías hasta que haya datos procesados |
+| Exportes (sección 7) y capturas (`PROYECTO/evidencias/ga4/NOTAS.md`) | Pendiente |
+
+Lo que se configura dentro de GA4 no queda en el repo: para continuar, pedir acceso a la propiedad con rol *Editor*
+(Administrar > Administración de acceso a la cuenta) y dejar capturas de cada paso en `PROYECTO/evidencias/ga4/`.
+
+### Problemas conocidos
+
+| Síntoma | Causa y solución |
+|---|---|
+| DebugView en 0 dispositivos y Tag Assistant no encuentra la etiqueta | El navegador bloquea Google Analytics: **Brave** (Shields), uBlock, AdBlock o Edge con prevención de seguimiento *Estricta*. Usar Chrome sin bloqueadores; quien genere tráfico con un bloqueador no cuenta en GA4 |
+| DebugView no muestra `view_item`, `add_to_cart` ni `purchase` | Esos los emite Odoo sin la marca de depuración de `?qm_ga4_debug=1`. Usar Tag Assistant (tagassistant.google.com) o verlos en Informes > Tiempo real |
+| Administrar > Eventos dice "Verás tus primeros informes de eventos aquí en un plazo de 24 horas" | Normal en una propiedad nueva. Para confirmar que llegan: Informes > Tiempo real, o F12 > Red > filtro `collect` |
+| *Nuevo evento clave* pide una URL | Ese botón crea eventos clave a partir de una página. Los eventos existentes se marcan desde Administrar > Eventos con la estrella de su fila |
+| En audiencias o segmentos no aparece un evento en la lista | Escribir el nombre a mano (`add_to_cart`, `purchase`); GA4 lo acepta aunque aún no lo haya procesado |
+
 ## 1. Conexión
 
 1. En analytics.google.com: Administrar > Crear > Cuenta `QuetzalMart` > Propiedad `QuetzalMart Tienda`,
