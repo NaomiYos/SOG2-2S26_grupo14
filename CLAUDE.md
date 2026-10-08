@@ -129,7 +129,7 @@ Actualiza esta tabla en el mismo commit que completa cada componente.
 | Bloque | Componente | Estado |
 |---|---|---|
 | 2 | Cuenta en AWS, instancia Lightsail 4 GB, IP estática, firewall y acceso SSH para el Bloque 1 | Completado (`evidencias/nube/`): `quetzalmart-erp` en us-east-1 con Docker, IP estática, 5432 restringido |
-| 2 | Despliegue en el servidor (Docker, Odoo, HTTPS, PostgreSQL accesible) y carga de datos con `datos/cargar_todo.py` | Pendiente |
+| 2 | Despliegue en el servidor (Docker, Odoo, HTTPS, PostgreSQL accesible) y carga de datos con `datos/cargar_todo.py` | Completado (`evidencias/instalacion/`, `evidencias/carga_masiva/`): Odoo 18 con HTTPS en sslip.io, PostgreSQL accesible por IP, resumen SQL en CUMPLE, 150 PDF en el servidor; moneda corregida a GTQ |
 | 2 | Evidencias de instalación, módulos y carga masiva en `PROYECTO/evidencias/` | Pendiente |
 | 1 | ERP: módulos instalados y configurados (compañía, almacenes, impuestos) | Completado en local (`datos/01_configurar_erp.py`) |
 | 1 | Datos maestros: productos (con imagen), clientes, proveedores | Completado en local (`datos/02_datos_maestros.py`): 60 productos, 80 clientes, 14 proveedores |
