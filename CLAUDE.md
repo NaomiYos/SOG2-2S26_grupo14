@@ -130,15 +130,16 @@ Actualiza esta tabla en el mismo commit que completa cada componente.
 |---|---|---|
 | 2 | Cuenta en AWS, instancia Lightsail 4 GB, IP estática, firewall y acceso SSH para el Bloque 1 | Completado (`evidencias/nube/`): `quetzalmart-erp` en us-east-1 con Docker, IP estática, 5432 restringido |
 | 2 | Despliegue en el servidor (Docker, Odoo, HTTPS, PostgreSQL accesible) y carga de datos con `datos/cargar_todo.py` | Completado (`evidencias/instalacion/`, `evidencias/carga_masiva/`): Odoo 18 con HTTPS en sslip.io, PostgreSQL accesible por IP, resumen SQL en CUMPLE, 150 PDF en el servidor; moneda corregida a GTQ |
-| 2 | Evidencias de instalación, módulos y carga masiva en `PROYECTO/evidencias/` | Pendiente |
+| 2 | Evidencias de instalación, módulos y carga masiva en `PROYECTO/evidencias/` | En progreso: `instalacion/` completo (11). Faltan repetir 05, 06 y 11 de `carga_masiva/` (ya en GTQ; antes regenerar los PDF con `08_exportar_facturas.py --todas`) y las 12 de `modulos/` (lista en su `NOTAS.md`) |
 | 1 | ERP: módulos instalados y configurados (compañía, almacenes, impuestos) | Completado en local (`datos/01_configurar_erp.py`) |
 | 1 | Datos maestros: productos (con imagen), clientes, proveedores | Completado en local (`datos/02_datos_maestros.py`): 60 productos, 80 clientes, 14 proveedores |
 | 1 | Empleados, cargos y departamentos | Completado en local (`datos/03_empleados.py`): 35 empleados, 6 cargos, 5 departamentos |
 | 1 | Ventas, cotizaciones, compras, materiales, facturas + 50 PDF | Completado en local (`datos/cargar_todo.py`): 150 ventas, 20 cotizaciones, 100 compras, 60 materiales, 250 facturas, 150 PDF |
 | 1 | Gestor documental (OCA `dms`) con documentos y etiquetas | Completado en local (`datos/09_gestor_documental.py`): 15 documentos, 3 carpetas, 12 etiquetas |
 | 1 | Consultas SQL de calificación | Completado (`sql/consultas_calificacion.sql`, secciones 0-7); el Bloque 2 agrega la sección 8 |
-| 2 | Tienda en línea: catálogo, carrito, impuestos, envío, pago, factura por correo | Pendiente |
-| 2 | Google Analytics 4: eventos, segmentos, exploraciones, audiencias | Pendiente |
-| 2 | RPA UiPath | Pendiente |
-| 2 | Marketing: correo de campaña posterior a la compra | Pendiente |
+| 1 | Correcciones a scripts del Bloque 1 detectadas al desplegar en base nueva | Pendiente: `infra/obtener_addons.sh` (crear `../addons` antes del `cd`) y `datos/01_configurar_erp.py` (`try_loading` con `[]` como primer argumento y volver a fijar GTQ y la lista de precios en GTQ). En el servidor se corrigieron a mano (`evidencias/carga_masiva/NOTAS.md`) |
+| 2 | Tienda en línea: catálogo, carrito, impuestos, envío, pago, factura por correo | En progreso (otra integrante): pagos de prueba configurados. Falta confirmar: solo los 60 `QM-` publicados, IVA 12 % en el carrito, 2-3 métodos de envío, factura automática por correo, evidencias en `evidencias/tienda/` |
+| 2 | Google Analytics 4: eventos, segmentos, exploraciones, audiencias | En progreso (`ga4/configuracion.md`, sección *Estado*): eventos de comercio electrónico llegando con `addons/qm_ga4_ecommerce`; faltan audiencias, segmentos, exploraciones y exportes |
+| 2 | RPA UiPath | Pendiente: generador de carpetas de prueba, robot en UiPath Studio, staging `quetzalmart_rpa`, carga a Odoo, sección 8 del SQL, diagrama y evidencias |
+| 2 | Marketing: correo de campaña posterior a la compra | Pendiente: cuenta Gmail dedicada (en creación), servidor de correo saliente en Odoo, plantilla HTML de campaña, regla que la envía después de la compra web, prueba completa |
 | — | Manuales 1, 2 y 3 | Pendiente |

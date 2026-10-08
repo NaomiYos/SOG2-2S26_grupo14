@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Carrito, checkout y pago comparten este layout: se deja el carrito en JSON para el widget de GA4 -->
+    <template id="checkout_layout_ga4" inherit_id="website_sale.checkout_layout" name="QuetzalMart: datos de GA4 en el checkout">
+        <xpath expr="//div[hasclass('o_website_sale_checkout')]" position="inside">
+            <div t-if="website.google_analytics_key and website_sale_order and website_sale_order.website_order_line"
+                 class="o_qm_ga4 d-none"
+                 t-att-data-qm-ga4="json.dumps(website_sale_order._qm_ga4_datos())"/>
+        </xpath>
+    </template>
+</odoo>
