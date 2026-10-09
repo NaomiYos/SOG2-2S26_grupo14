@@ -105,6 +105,20 @@ def main():
                       context={"lang": idioma})
         print(f"Plantilla lista: {nombre} (id {plantilla})")
 
+        if clave == "plantilla_correo_compra":
+            # Esta versión de Odoo no deja elegir la plantilla de confirmación en Ajustes y envía
+            # siempre la estándar "Ventas: Confirmación de pedido", así que también se actualiza ésa.
+            try:
+                estandar = odoo.ref("sale.mail_template_sale_confirmation")
+            except Exception:
+                print("AVISO: no se encontró la plantilla estándar de confirmación de pedido")
+                continue
+            for idioma in ("en_US", "es_419"):
+                odoo.call("mail.template", "write", [estandar],
+                          {"subject": asunto, "body_html": htmls[clave], "email_from": remitente},
+                          context={"lang": idioma})
+            print("Plantilla estándar de confirmación de pedido actualizada")
+
 
 if __name__ == "__main__":
     main()
