@@ -1,0 +1,121 @@
+<!-- Correo 1: confirmación de la compra. Modelo de la plantilla: sale.order (Pedido de venta). -->
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;">Recibimos tu pedido. Aquí está el resumen de tu compra en QuetzalMart.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F3F6F4;padding:24px 0;font-family:Arial,Helvetica,sans-serif;">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#FFFFFF;border-radius:12px;overflow:hidden;">
+
+        <!-- Encabezado -->
+        <tr>
+          <td align="center" style="background-color:#FFFFFF;padding:24px 24px 16px 24px;">
+            <img t-attf-src="{{ object.get_base_url() }}/qm/logo.jpg" alt="QuetzalMart" height="64" style="height:64px;max-width:240px;border:0;display:block;margin:0 auto;"/>
+            <div style="color:#0B7A4B;font-size:13px;letter-spacing:1px;margin-top:8px;">Calidad a precios accesibles</div>
+          </td>
+        </tr>
+        <tr><td style="background-color:#C8102E;height:5px;line-height:5px;font-size:1px;">&nbsp;</td></tr>
+
+        <!-- Saludo -->
+        <tr>
+          <td style="padding:32px 32px 8px 32px;color:#1F2933;">
+            <div style="font-size:24px;font-weight:bold;color:#0B7A4B;">¡Gracias por tu compra, <t t-out="object.partner_id.name or ''">cliente</t>!</div>
+            <p style="font-size:15px;line-height:1.6;margin:12px 0 0 0;">
+              Recibimos tu pedido y ya lo estamos preparando. Aquí tienes el resumen para que lo tengas a la mano.
+            </p>
+          </td>
+        </tr>
+
+        <!-- Datos del pedido -->
+        <tr>
+          <td style="padding:16px 32px 8px 32px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#EAF5EF;border-radius:8px;">
+              <tr>
+                <td style="padding:14px 16px;font-size:14px;color:#1F2933;">
+                  <strong>Pedido:</strong> <t t-out="object.name or ''">S00001</t><br/>
+                  <strong>Fecha:</strong> <t t-out="format_date(object.date_order)">01/01/2026</t>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Productos -->
+        <tr>
+          <td style="padding:16px 32px 0 32px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px;color:#1F2933;">
+              <tr>
+                <td style="padding:8px 0;border-bottom:2px solid #0B7A4B;font-weight:bold;">Producto</td>
+                <td align="center" style="padding:8px 0;border-bottom:2px solid #0B7A4B;font-weight:bold;">Cant.</td>
+                <td align="right" style="padding:8px 0;border-bottom:2px solid #0B7A4B;font-weight:bold;">Importe</td>
+              </tr>
+              <t t-foreach="object.order_line" t-as="line">
+                <t t-if="not line.display_type">
+                  <tr>
+                    <td style="padding:10px 0;border-bottom:1px solid #E4E7EB;"><t t-out="line.product_id.name or line.name or ''">Producto</t></td>
+                    <td align="center" style="padding:10px 0;border-bottom:1px solid #E4E7EB;"><t t-out="int(line.product_uom_qty)">1</t></td>
+                    <td align="right" style="padding:10px 0;border-bottom:1px solid #E4E7EB;"><t t-out="format_amount(line.price_subtotal, object.currency_id)">Q 0.00</t></td>
+                  </tr>
+                </t>
+              </t>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Totales -->
+        <tr>
+          <td style="padding:12px 32px 0 32px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px;color:#1F2933;">
+              <tr>
+                <td align="right" style="padding:4px 0;">Subtotal</td>
+                <td align="right" width="120" style="padding:4px 0;"><t t-out="format_amount(object.amount_untaxed, object.currency_id)">Q 0.00</t></td>
+              </tr>
+              <tr>
+                <td align="right" style="padding:4px 0;">IVA 12%</td>
+                <td align="right" width="120" style="padding:4px 0;"><t t-out="format_amount(object.amount_tax, object.currency_id)">Q 0.00</t></td>
+              </tr>
+              <tr>
+                <td align="right" style="padding:10px 0;font-size:18px;font-weight:bold;color:#0B7A4B;">Total</td>
+                <td align="right" width="120" style="padding:10px 0;font-size:18px;font-weight:bold;color:#0B7A4B;"><t t-out="format_amount(object.amount_total, object.currency_id)">Q 0.00</t></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Pago -->
+        <tr>
+          <td style="padding:8px 32px 0 32px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-left:4px solid #C8102E;background-color:#FDF2F4;">
+              <tr>
+                <td style="padding:12px 16px;font-size:13px;line-height:1.5;color:#1F2933;">
+                  <strong>¿Pagas por transferencia?</strong> Usa el número de tu pedido
+                  (<strong><t t-out="object.name or ''">S00001</t></strong>) como referencia. Confirmaremos tu pedido cuando recibamos el pago.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Botón -->
+        <tr>
+          <td align="center" style="padding:28px 32px 8px 32px;">
+            <a t-attf-href="{{ object.get_base_url() }}{{ object.get_portal_url() }}" style="background-color:#0B7A4B;color:#FFFFFF;text-decoration:none;font-size:15px;font-weight:bold;padding:14px 32px;border-radius:8px;display:inline-block;">Ver mi pedido</a>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="padding:4px 32px 28px 32px;">
+            <a t-attf-href="{{ object.get_base_url() }}/shop" style="color:#C8102E;font-size:14px;text-decoration:underline;">Seguir comprando</a>
+          </td>
+        </tr>
+
+        <!-- Pie -->
+        <tr>
+          <td align="center" style="background-color:#F3F6F4;padding:20px 32px;font-size:12px;line-height:1.6;color:#52606D;">
+            <strong><t t-out="object.company_id.name or 'QuetzalMart'">QuetzalMart</t></strong><br/>
+            6a. Avenida 10-25, Zona 1, Ciudad de Guatemala · +502 2200 1400<br/>
+            ¿Dudas con tu pedido? Responde a este correo y con gusto te ayudamos.
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
