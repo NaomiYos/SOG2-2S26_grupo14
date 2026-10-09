@@ -1,0 +1,138 @@
+<!-- Correo 2: campaña de marketing posterior a la compra. Modelo de la plantilla: sale.order (la dispara la regla de automatización).
+     Las imágenes se sirven desde el propio Odoo en /qm/<archivo> (las sube 12_plantillas_correo.py desde PROYECTO/marketing/imagenes/). -->
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;">Tu súper favorito, ahora a un clic de tu casa. Mira lo que tenemos para ti.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F3F6F4;padding:24px 0;font-family:Arial,Helvetica,sans-serif;">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#FFFFFF;border-radius:12px;overflow:hidden;">
+
+        <!-- Encabezado -->
+        <tr>
+          <td align="center" style="background-color:#FFFFFF;padding:24px 24px 16px 24px;">
+            <img t-attf-src="{{ object.get_base_url() }}/qm/logo.jpg" alt="QuetzalMart" height="64" style="height:64px;max-width:240px;border:0;display:block;margin:0 auto;"/>
+          </td>
+        </tr>
+        <tr><td style="background-color:#C8102E;height:5px;line-height:5px;font-size:1px;">&nbsp;</td></tr>
+
+        <!-- Imagen principal -->
+        <tr>
+          <td>
+            <img t-attf-src="{{ object.get_base_url() }}/qm/campana_banner.jpg" alt="Productos frescos de QuetzalMart" width="600" style="width:100%;max-width:600px;height:auto;display:block;border:0;"/>
+          </td>
+        </tr>
+
+        <!-- Mensaje principal -->
+        <tr>
+          <td align="center" style="background-color:#FFF8E6;padding:36px 32px 32px 32px;">
+            <div style="font-size:13px;letter-spacing:2px;color:#C8102E;font-weight:bold;">CALIDAD A PRECIOS ACCESIBLES</div>
+            <div style="font-size:30px;line-height:1.2;font-weight:bold;color:#0B7A4B;margin:12px 0;">Tu súper, ahora a un clic de tu casa</div>
+            <p style="font-size:16px;line-height:1.6;color:#1F2933;margin:0 0 24px 0;">
+              Hola <t t-out="object.partner_id.name or ''">amigo</t>, gracias por elegirnos. Descubre todo lo que tenemos para llenar tu mesa y tu despensa, sin salir de casa.
+            </p>
+            <a t-attf-href="{{ object.get_base_url() }}/shop" style="background-color:#C8102E;color:#FFFFFF;text-decoration:none;font-size:16px;font-weight:bold;padding:16px 40px;border-radius:30px;display:inline-block;">Ir a la tienda</a>
+          </td>
+        </tr>
+
+        <!-- Beneficios -->
+        <tr>
+          <td style="padding:28px 24px 8px 24px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td valign="top" width="33%" style="padding:0 8px;">
+                  <div style="border-top:3px solid #C8102E;padding-top:10px;font-size:13px;color:#1F2933;line-height:1.5;">
+                    <strong style="font-size:15px;color:#0B7A4B;">Frescura diaria</strong><br/>Productos de calidad en cada pedido.
+                  </div>
+                </td>
+                <td valign="top" width="33%" style="padding:0 8px;">
+                  <div style="border-top:3px solid #C8102E;padding-top:10px;font-size:13px;color:#1F2933;line-height:1.5;">
+                    <strong style="font-size:15px;color:#0B7A4B;">Precios justos</strong><br/>Para todos los bolsillos.
+                  </div>
+                </td>
+                <td valign="top" width="33%" style="padding:0 8px;">
+                  <div style="border-top:3px solid #C8102E;padding-top:10px;font-size:13px;color:#1F2933;line-height:1.5;">
+                    <strong style="font-size:15px;color:#0B7A4B;">A tu puerta</strong><br/>Compra desde la comodidad de tu casa.
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Categorías con fotografía -->
+        <tr>
+          <td align="center" style="padding:24px 24px 0 24px;">
+            <div style="font-size:22px;font-weight:bold;color:#0B7A4B;">Encuentra lo que necesitas</div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:12px 16px 8px 16px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="50%" valign="top" style="padding:8px;">
+                  <a t-attf-href="{{ object.get_base_url() }}/shop" style="text-decoration:none;">
+                    <img t-attf-src="{{ object.get_base_url() }}/qm/cat_frutas_verduras.jpg" alt="Frutas y verduras" width="260" style="width:100%;height:auto;display:block;border:0;border-radius:10px 10px 0 0;"/>
+                    <div style="background-color:#0B7A4B;color:#FFFFFF;font-size:14px;font-weight:bold;text-align:center;padding:10px 6px;border-radius:0 0 10px 10px;">Frutas y verduras</div>
+                  </a>
+                </td>
+                <td width="50%" valign="top" style="padding:8px;">
+                  <a t-attf-href="{{ object.get_base_url() }}/shop" style="text-decoration:none;">
+                    <img t-attf-src="{{ object.get_base_url() }}/qm/cat_carnes.jpg" alt="Carnes y mariscos" width="260" style="width:100%;height:auto;display:block;border:0;border-radius:10px 10px 0 0;"/>
+                    <div style="background-color:#0B7A4B;color:#FFFFFF;font-size:14px;font-weight:bold;text-align:center;padding:10px 6px;border-radius:0 0 10px 10px;">Carnes y mariscos</div>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%" valign="top" style="padding:8px;">
+                  <a t-attf-href="{{ object.get_base_url() }}/shop" style="text-decoration:none;">
+                    <img t-attf-src="{{ object.get_base_url() }}/qm/cat_lacteos.jpg" alt="Lácteos y huevos" width="260" style="width:100%;height:auto;display:block;border:0;border-radius:10px 10px 0 0;"/>
+                    <div style="background-color:#0B7A4B;color:#FFFFFF;font-size:14px;font-weight:bold;text-align:center;padding:10px 6px;border-radius:0 0 10px 10px;">Lácteos y huevos</div>
+                  </a>
+                </td>
+                <td width="50%" valign="top" style="padding:8px;">
+                  <a t-attf-href="{{ object.get_base_url() }}/shop" style="text-decoration:none;">
+                    <img t-attf-src="{{ object.get_base_url() }}/qm/cat_panaderia.jpg" alt="Panadería" width="260" style="width:100%;height:auto;display:block;border:0;border-radius:10px 10px 0 0;"/>
+                    <div style="background-color:#0B7A4B;color:#FFFFFF;font-size:14px;font-weight:bold;text-align:center;padding:10px 6px;border-radius:0 0 10px 10px;">Panadería</div>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%" valign="top" style="padding:8px;">
+                  <a t-attf-href="{{ object.get_base_url() }}/shop" style="text-decoration:none;">
+                    <img t-attf-src="{{ object.get_base_url() }}/qm/cat_bebidas.jpg" alt="Bebidas" width="260" style="width:100%;height:auto;display:block;border:0;border-radius:10px 10px 0 0;"/>
+                    <div style="background-color:#0B7A4B;color:#FFFFFF;font-size:14px;font-weight:bold;text-align:center;padding:10px 6px;border-radius:0 0 10px 10px;">Bebidas</div>
+                  </a>
+                </td>
+                <td width="50%" valign="top" style="padding:8px;">
+                  <a t-attf-href="{{ object.get_base_url() }}/shop" style="text-decoration:none;">
+                    <img t-attf-src="{{ object.get_base_url() }}/qm/cat_cafe.jpg" alt="Café y desayuno" width="260" style="width:100%;height:auto;display:block;border:0;border-radius:10px 10px 0 0;"/>
+                    <div style="background-color:#0B7A4B;color:#FFFFFF;font-size:14px;font-weight:bold;text-align:center;padding:10px 6px;border-radius:0 0 10px 10px;">Café y desayuno</div>
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Segundo llamado -->
+        <tr>
+          <td align="center" style="padding:16px 32px 32px 32px;">
+            <p style="font-size:15px;line-height:1.6;color:#1F2933;margin:0 0 18px 0;">
+              Más de 60 productos esperan por ti en Guatemala, México y El Salvador.
+            </p>
+            <a t-attf-href="{{ object.get_base_url() }}/shop" style="background-color:#0B7A4B;color:#FFFFFF;text-decoration:none;font-size:15px;font-weight:bold;padding:14px 36px;border-radius:30px;display:inline-block;">Hacer mi próximo pedido</a>
+          </td>
+        </tr>
+
+        <!-- Pie -->
+        <tr>
+          <td align="center" style="background-color:#0B7A4B;padding:20px 32px;font-size:12px;line-height:1.6;color:#DDF1E7;">
+            <strong style="color:#FFFFFF;"><t t-out="object.company_id.name or 'QuetzalMart'">QuetzalMart</t></strong><br/>
+            6a. Avenida 10-25, Zona 1, Ciudad de Guatemala · +502 2200 1400<br/>
+            Recibes este correo porque realizaste una compra en nuestra tienda en línea.
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
