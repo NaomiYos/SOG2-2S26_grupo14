@@ -143,3 +143,28 @@ Actualiza esta tabla en el mismo commit que completa cada componente.
 | 2 | RPA UiPath | Pendiente: generador de carpetas de prueba, robot en UiPath Studio, staging `quetzalmart_rpa`, carga a Odoo, sección 8 del SQL, diagrama y evidencias |
 | 2 | Marketing: correo de campaña posterior a la compra | Pendiente: cuenta Gmail dedicada (en creación), servidor de correo saliente en Odoo, plantilla HTML de campaña, regla que la envía después de la compra web, prueba completa |
 | — | Manuales 1, 2 y 3 | Pendiente |
+
+
+## Estado actualizado por naomi
+## 5. Estado por componente
+
+| Componente | Estado | Qué falta |
+|---|---|---|
+| ERP: módulos, compañía, almacenes, impuestos | Hecho | Capturas |
+| Datos maestros, empleados, materiales | Hecho | Capturas |
+| Ventas, cotizaciones, compras, facturas y 150 PDF | Hecho | Repetir la carga en el servidor si no se hizo; capturas |
+| Gestor documental | Hecho | Capturas del filtrado por etiquetas |
+| Consultas SQL (secciones 0 a 7) | Hecho | Sección 8 con las consultas del RPA y de la tienda |
+| Servidor en la nube (Lightsail) | Odoo funcionando por HTTP | HTTPS con Caddy; corregir `CLAUDE.md` |
+| Tienda: catálogo, categorías, carrito, IVA, envío | Hecho | Capturas |
+| Pago por transferencia bancaria | Hecho | Decidir si se agrega pago contra entrega y/o Stripe en modo de prueba |
+| Confirmación automática del pedido | Hecho (regla de automatización) | Capturas de la regla |
+| Plantilla del correo de la compra | Se genera con el diseño nuevo | **Por verificar** que el correo llegue a la bandeja |
+| Correo de campaña posterior a la compra | Plantilla lista | **Por verificar** la regla y el retraso |
+| Factura por correo | Sin implementar | Decidir si va adjunta al correo de la compra |
+| Oportunidad en el CRM al registrarse | Sin implementar | Regla de automatización |
+| Google Analytics 4 | Sin empezar | Propiedad, eventos, segmentos, exploraciones, audiencias |
+| RPA con UiPath | Sin empezar | Robot, generador de Excel de prueba, carga a la base |
+| Manuales 1, 2 y 3 | Sin empezar | Este documento es el insumo |
+
+---
