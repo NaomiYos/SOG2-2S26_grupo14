@@ -2,8 +2,9 @@
 # Descarga los módulos OCA en ../addons/oca/ con versiones fijas (no se suben al repo).
 # Volver a ejecutarlo actualiza a la versión indicada aquí. Uso: sh obtener_addons.sh
 set -e
+# En un clon nuevo ../addons no existe (git no guarda carpetas vacías): se crea antes de entrar.
+mkdir -p "$(dirname "$0")/../addons/oca"
 cd "$(dirname "$0")/../addons"
-mkdir -p oca
 
 obtener() {  # repositorio, rama, commit
   destino="oca/$1"

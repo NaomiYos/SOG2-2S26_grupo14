@@ -2,7 +2,8 @@
 
 - Compañía QuetzalMart (Guatemala, GTQ) antes de instalar contabilidad.
 - Módulos: Contactos, CRM, Ventas, Compras, Inventario, Facturación, Empleados y localización GT.
-- Plan contable de Guatemala con IVA 12 % como impuesto por defecto de ventas y compras.
+- Plan contable de Guatemala con IVA 12 % como impuesto por defecto de ventas y compras
+  (y la compañía y la lista de precios de vuelta en GTQ si el plan genérico las dejó en USD).
 - Multialmacén: sede Guatemala (GT) y sucursales México (MX) y El Salvador (SV).
 - Logo, colores corporativos y diseño de facturas y demás documentos.
 
@@ -92,11 +93,27 @@ def instalar_modulos(odoo):
     print("Módulos instalados")
 
 
+def fijar_gtq(odoo, compania):
+    """Al instalar account, Odoo carga primero el plan genérico, que deja la compañía y la lista
+    de precios en USD. Se vuelven a GTQ mientras no haya asientos ni pedidos que las usen."""
+    gtq = odoo.ref("base.GTQ")
+    actual = odoo.search_read("res.company", [("id", "=", compania)], ["currency_id"])[0]["currency_id"][0]
+    if actual != gtq and not odoo.search("account.move.line", [("company_id", "=", compania)], limit=1):
+        odoo.write("res.company", compania, {"currency_id": gtq})
+        print("Moneda de la compañía: GTQ")
+    for lista in odoo.search("product.pricelist", [("currency_id", "!=", gtq)], context={"active_test": False}):
+        if not odoo.search("sale.order", [("pricelist_id", "=", lista)], limit=1):
+            odoo.write("product.pricelist", lista, {"currency_id": gtq})
+            print(f"Lista de precios {lista} en GTQ")
+
+
 def configurar_impuestos(odoo, compania):
     datos = odoo.search_read("res.company", [("id", "=", compania)], ["chart_template"])[0]
     if datos["chart_template"] != "gt":
-        odoo.call("account.chart.template", "try_loading", "gt", compania, install_demo=False)
+        # try_loading no es @api.model en Odoo 18: por XML-RPC necesita una lista de ids vacía primero.
+        odoo.accion("account.chart.template", "try_loading", [], "gt", compania, install_demo=False)
         print("Plan contable de Guatemala cargado")
+    fijar_gtq(odoo, compania)
     iva = {}
     for uso in ("sale", "purchase"):
         ids = odoo.search(

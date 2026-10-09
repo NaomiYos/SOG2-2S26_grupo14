@@ -7,7 +7,9 @@
 
 `consultas_calificacion.sql` empieza con un **resumen** que compara cada requisito del enunciado con lo cargado
 (`CUMPLE` / `FALTA`) y luego tiene una sección por módulo: ventas, cotizaciones, empleados, compras,
-materiales, facturas y gestor documental. La sección 8 queda para la tienda en línea y el RPA.
+materiales, facturas y gestor documental. La sección 8 cubre la tienda en línea (catálogo, pedidos web,
+clientes registrados, correos), el CRM y las facturas más recientes, que son las que se generan durante la calificación.
+La sección 9 queda para el RPA.
 
 ## Ejecutar
 

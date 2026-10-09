@@ -18,11 +18,13 @@ Abrir http://localhost:8069 · usuario `admin` / contraseña `admin` (cambiarla 
 
 ## 2. Servidor en la nube
 
-1. Droplet de DigitalOcean: imagen Marketplace **Docker on Ubuntu 24.04**, plan Basic 2 vCPU / 4 GB, región New York o San Francisco, acceso por llave SSH.
-2. Dominio: `DOMAIN=<ip-con-guiones>.sslip.io` (sin registro) o un subdominio de DuckDNS apuntando a la IP.
-3. Cloud Firewall: abrir 80 y 443 a todo público; 22 y 5432 solo a las IPs del equipo / de la calificación.
-4. Si la imagen no trae Docker: `curl -fsSL https://get.docker.com | sh && sudo usermod -aG docker $USER`
-5. Clonar el repo, entrar a `PROYECTO/infra`, crear `.env` (con `PG_BIND=0.0.0.0` y `DOMAIN`) y `config/odoo.conf`, y ejecutar `sh obtener_addons.sh`.
+1. Instancia de AWS Lightsail `quetzalmart-erp`: Ubuntu 24.04 LTS, 2 vCPU / 4 GB / 80 GB, región Virginia (`us-east-1`),
+   IP estática y acceso por llave SSH (usuario `ubuntu`). Detalle y capturas en `../evidencias/nube/`.
+2. Dominio: `DOMAIN=<ip-con-guiones>.sslip.io` (sin registro; Caddy obtiene el certificado HTTPS solo).
+3. Firewall de Lightsail: 80 y 443 a todo público; 22 abierto (solo entra quien tiene llave); 5432 solo a las IPs del equipo.
+4. Docker lo instala el script de arranque de la instancia. Si falta: `curl -fsSL https://get.docker.com | sh && sudo usermod -aG docker $USER`.
+   Agregar 2 GB de swap para que Odoo no se reinicie al generar los PDF.
+5. Clonar el repo en `~/SOG2-2S26_grupo14`, entrar a `PROYECTO/infra`, crear `.env` (con `PG_BIND=0.0.0.0` y `DOMAIN`) y `config/odoo.conf`, y ejecutar `sh obtener_addons.sh`.
 6. Crear la base como en el paso local y luego: `docker compose --profile prod up -d`
 7. Comprobar `https://<dominio>` y la conexión SQL externa:
    `psql "host=<ip> port=5432 dbname=quetzalmart user=odoo"`
@@ -36,5 +38,9 @@ Abrir http://localhost:8069 · usuario `admin` / contraseña `admin` (cambiarla 
 | Actualizar un módulo | `docker compose run --rm odoo odoo -d quetzalmart -u <modulo> --stop-after-init` |
 | Respaldo de la base | `docker compose exec db pg_dump -U odoo -Fc quetzalmart > quetzalmart_$(date +%F).dump` |
 | Restaurar | `docker compose exec -T db pg_restore -U odoo -d quetzalmart --clean < archivo.dump` |
+| Respaldo de los adjuntos (imágenes, PDF, documentos) | `docker compose exec -T odoo tar czf - -C /var/lib/odoo filestore/quetzalmart > filestore_$(date +%F).tar.gz` |
+
+En el servidor los respaldos se guardan en `~/respaldos/`. Antes de un cambio grande conviene además un snapshot de la
+instancia en Lightsail (Instancia > Snapshots > Create snapshot).
 
 El script `../sql/init/01-base-rpa.sql` crea la base de staging `quetzalmart_rpa`; solo corre cuando el volumen `pg-data` es nuevo.

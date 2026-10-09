@@ -13,9 +13,11 @@ SELECT requisito, minimo, cargado, CASE WHEN cargado >= minimo THEN 'CUMPLE' ELS
 FROM (
     SELECT 1 AS orden, 'Ventas confirmadas' AS requisito, 150 AS minimo,
            (SELECT count(*) FROM sale_order WHERE state = 'sale') AS cargado
-    UNION ALL SELECT 2, 'Cotizaciones a clientes y proveedores', 20,
-           (SELECT count(*) FROM sale_order WHERE state IN ('draft', 'sent'))
-         + (SELECT count(*) FROM purchase_order WHERE state IN ('draft', 'sent'))
+    -- Foro: son 20 de venta y 20 de compra. No se cuentan los carritos de la tienda (website_id).
+    UNION ALL SELECT 2, 'Cotizaciones de venta (a clientes)', 20,
+           (SELECT count(*) FROM sale_order WHERE state IN ('draft', 'sent') AND website_id IS NULL)
+    UNION ALL SELECT 2, 'Solicitudes de cotización (a proveedores)', 20,
+           (SELECT count(*) FROM purchase_order WHERE state IN ('draft', 'sent'))
     UNION ALL SELECT 3, 'Empleados', 35,
            (SELECT count(*) FROM hr_employee WHERE active AND name <> 'Administrator')
     UNION ALL SELECT 4, 'Cargos', 6, (SELECT count(*) FROM hr_job)
@@ -85,13 +87,14 @@ LIMIT 10;
 
 
 -- -----------------------------------------------------------------------------
--- 2. COTIZACIONES (a clientes y a proveedores)
+-- 2. COTIZACIONES: 20 a clientes y 20 a proveedores (sin confirmar)
+-- Esperado: 20 filas 'Cliente' y 20 'Proveedor' como mínimo, en borrador (draft) o enviadas (sent).
 -- -----------------------------------------------------------------------------
 SELECT 'Cliente'   AS dirigida_a, so.name AS documento, so.date_order::date AS fecha,
        p.name AS contacto, so.state AS estado, so.amount_total AS total
 FROM sale_order so
 JOIN res_partner p ON p.id = so.partner_id
-WHERE so.state IN ('draft', 'sent')
+WHERE so.state IN ('draft', 'sent') AND so.website_id IS NULL
 UNION ALL
 SELECT 'Proveedor', po.name, po.date_order::date, p.name, po.state, po.amount_total
 FROM purchase_order po
@@ -253,8 +256,98 @@ WHERE a.name LIKE 'Factura\_%' OR a.name LIKE 'Contrato\_%'
 GROUP BY a.res_model;
 
 
+-- -----------------------------------------------------------------------------
+-- 8. TIENDA EN LÍNEA, CRM Y FACTURAS DE LA CALIFICACIÓN
+-- -----------------------------------------------------------------------------
+
+-- 8.1 Catálogo publicado: cada producto con precio, IVA, imagen y descripción
+-- Esperado: los 60 productos QM- publicados, con imagen = sí, descripción = sí e IVA 12% ventas.
+SELECT pt.default_code AS codigo,
+       coalesce(pt.name->>'es_419', pt.name->>'en_US') AS producto,
+       pt.list_price AS precio_q,
+       (SELECT string_agg(coalesce(t.name->>'es_419', t.name->>'en_US'), ', ')
+          FROM product_taxes_rel r JOIN account_tax t ON t.id = r.tax_id
+         WHERE r.prod_id = pt.id) AS impuesto,
+       EXISTS (SELECT 1 FROM ir_attachment a WHERE a.res_model = 'product.template'
+                 AND a.res_id = pt.id AND a.res_field = 'image_1920') AS imagen,
+       coalesce(pt.description_sale->>'es_419', pt.description_sale->>'en_US') IS NOT NULL AS descripcion
+FROM product_template pt
+WHERE pt.is_published AND pt.active
+ORDER BY pt.default_code;
+
+-- 8.2 Pedidos de la tienda en línea (los del auxiliar aparecen primero)
+-- Esperado: el pedido de la calificación con su IVA, el costo de envío, la factura y el estado del pago.
+SELECT so.name                       AS pedido,
+       so.create_date::timestamp(0)  AS creado,
+       p.name                        AS cliente,
+       p.email                       AS correo,
+       so.state                      AS estado,
+       so.amount_untaxed             AS subtotal,
+       so.amount_tax                 AS iva,
+       (SELECT sum(l.price_total) FROM sale_order_line l
+         WHERE l.order_id = so.id AND l.is_delivery) AS envio,
+       so.amount_total               AS total,
+       (SELECT string_agg(f.name, ', ') FROM account_move f
+         WHERE f.invoice_origin = so.name AND f.move_type = 'out_invoice') AS factura,
+       (SELECT string_agg(t.state, ', ') FROM sale_order_transaction_rel r
+          JOIN payment_transaction t ON t.id = r.transaction_id
+         WHERE r.sale_order_id = so.id) AS pago
+FROM sale_order so
+JOIN res_partner p ON p.id = so.partner_id
+WHERE so.website_id IS NOT NULL AND so.state <> 'draft'
+ORDER BY so.create_date DESC;
+
+-- 8.3 Facturas más recientes (las generadas durante la calificación quedan arriba)
+-- Esperado: la factura nueva con su archivo PDF en PROYECTO/facturas_pdf/.
+SELECT f.name                               AS factura,
+       replace(f.name, '/', '_') || '.pdf'  AS archivo_pdf,
+       f.create_date::timestamp(0)          AS creada,
+       CASE f.move_type WHEN 'out_invoice' THEN 'Cliente' ELSE 'Proveedor' END AS tipo,
+       p.name                               AS contacto,
+       f.invoice_origin                     AS origen,
+       f.amount_total                       AS total,
+       f.state                              AS estado
+FROM account_move f
+JOIN res_partner p ON p.id = f.partner_id
+WHERE f.move_type IN ('out_invoice', 'in_invoice')
+ORDER BY f.create_date DESC, f.id DESC
+LIMIT 15;
+
+-- 8.4 Clientes registrados en la tienda (usuarios del portal)
+-- Esperado: el usuario que crea el auxiliar al registrarse, con su fecha de alta.
+SELECT u.login                     AS usuario,
+       p.name                      AS cliente,
+       u.create_date::timestamp(0) AS registrado
+FROM res_users u
+JOIN res_partner p ON p.id = u.partner_id
+WHERE u.share AND u.active
+ORDER BY u.create_date DESC;
+
+-- 8.5 CRM: oportunidades por etapa
+SELECT coalesce(s.name->>'es_419', s.name->>'en_US') AS etapa,
+       l.type                                         AS tipo,
+       count(*)                                       AS registros,
+       sum(l.expected_revenue)                        AS ingreso_esperado_q
+FROM crm_lead l
+LEFT JOIN crm_stage s ON s.id = l.stage_id
+WHERE l.active
+GROUP BY s.sequence, etapa, l.type
+ORDER BY s.sequence, tipo;
+
+-- 8.6 Correos del pedido web: confirmación de la compra (con adjunto) y demás avisos
+-- La campaña se envía programada desde la plantilla y no queda en el historial del pedido.
+SELECT so.name                         AS pedido,
+       m.date::timestamp(0)            AS enviado,
+       m.subject                       AS asunto,
+       m.email_from                    AS remitente,
+       (SELECT count(*) FROM message_attachment_rel r WHERE r.message_id = m.id) AS adjuntos
+FROM mail_message m
+JOIN sale_order so ON so.id = m.res_id AND m.model = 'sale.order'
+WHERE so.website_id IS NOT NULL AND m.subject IS NOT NULL
+ORDER BY m.date DESC
+LIMIT 20;
+
+
 -- =============================================================================
--- 8. BLOQUE 2: TIENDA EN LÍNEA Y RPA
--- Agregar aquí las consultas de los pedidos web y de lo cargado por el RPA
--- (base quetzalmart_rpa y clientes/productos creados en Odoo).
+-- 9. RPA (pendiente: clientes y productos cargados por el robot)
 -- =============================================================================

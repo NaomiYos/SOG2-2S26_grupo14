@@ -73,12 +73,30 @@ El juego real de carpetas se entrega el día de la calificación, así que el ro
 | Localización | Guatemala, moneda GTQ, IVA 12 % | Sede central |
 | Gestor documental | Módulo OCA `dms` | `Documents` es exclusivo de Enterprise |
 | Marketing | `mass_mailing` + reglas de automatización (`base_automation`) + plantillas de correo | `Marketing Automation` es exclusivo de Enterprise |
-| Correo saliente | Cuenta o dominio dedicado a QuetzalMart (SMTP), nunca el correo personal de un integrante | Requisito explícito |
+| Correo saliente | Brevo (SMTP, puerto 587) con remitente `ventas@adasystemsgt.com`: dominio de un integrante, autenticado en Brevo (DKIM y DMARC). Nunca una cuenta Gmail/Outlook creada para el proyecto ni el correo personal de un integrante | Foro: no se permite crear una cuenta de Gmail u Outlook; sí un dominio o un correo saliente configurado en Odoo |
 | Analítica | GA4 con medición de comercio electrónico | Requisito explícito |
-| RPA | UiPath Studio (Windows) → staging en la base `quetzalmart_rpa` → Odoo vía JSON-RPC | El dato queda visible en la base y en el sitio web |
+| RPA | UiPath Studio (Windows) recorre las carpetas, consolida las hojas `clientes` y `productos` y las carga con la pantalla **Importar** de Odoo (automatización del navegador). **Sin API de Odoo** | Foro: no se permite usar ninguna API de Odoo desde UiPath. El dato queda visible en la base y en el sitio web |
 | Datos masivos | Scripts Python con XML-RPC y **External IDs** (`qm_...`) | Recargar no duplica registros |
 
 Módulos Enterprise que **no** existen aquí: Documents, Marketing Automation, Studio, Sign, Knowledge. No los propongas.
+
+## Aclaraciones del auxiliar (foro y rúbrica, `PROYECTO/enunciado/`)
+
+Mandan sobre el enunciado cuando lo contradicen.
+
+| Tema | Aclaración |
+|---|---|
+| Cotizaciones | 20 de venta **y** 20 de compra (no 20 en total) |
+| Compras | Confirmadas y con su factura |
+| Sucursales | Basta una compañía con 3 almacenes |
+| Pago | Se acepta un método de pago en modo de prueba si GA4 registra el `purchase` |
+| Base de datos | PostgreSQL; una sola base en la nube, todo centralizado. En la calificación se llevan las consultas listas |
+| RPA | Sin API de Odoo. Hojas y archivos con el nombre exacto (`clientes`, `productos`). Encabezados iguales a los archivos de ejemplo del foro: `External ID` (no `ID Externo`). `Related Company` y `Product Values` siempre vienen vacías. Obligatorias: `External ID`, `Name`, `Product Type` (productos) y `Name`, `Company Type` (clientes) |
+| Correo | No crear cuentas Gmail/Outlook para el proyecto. En la calificación se usan direcciones de temp-mail.org: si ahí no llegan, hace falta dominio (SPF, DKIM, DMARC) |
+| Correo de compra | Debe traer **adjunto el recibo o la factura** (rúbrica 1.32) |
+| Audiencias GA4 | Las 3 son adicionales a la de abandono de carrito: la de abandono de carrito **no cuenta** (rúbrica 1.26) |
+| Entrega | Un `.zip` con los 3 manuales en PDF; el enlace de Odoo va en el Manual 1 |
+| Terraform | Permitido para desplegar |
 
 ## Entorno local
 
@@ -124,47 +142,23 @@ La base de Odoo se llama `quetzalmart`. Ningún script debe asumir otro nombre.
 
 ## Estado del proyecto
 
-Actualiza esta tabla en el mismo commit que completa cada componente.
-
-| Bloque | Componente | Estado |
-|---|---|---|
-| 2 | Cuenta en AWS, instancia Lightsail 4 GB, IP estática, firewall y acceso SSH para el Bloque 1 | Completado (`evidencias/nube/`): `quetzalmart-erp` en us-east-1 con Docker, IP estática, 5432 restringido |
-| 2 | Despliegue en el servidor (Docker, Odoo, HTTPS, PostgreSQL accesible) y carga de datos con `datos/cargar_todo.py` | Completado (`evidencias/instalacion/`, `evidencias/carga_masiva/`): Odoo 18 con HTTPS en sslip.io, PostgreSQL accesible por IP, resumen SQL en CUMPLE, 150 PDF en el servidor; moneda corregida a GTQ |
-| 2 | Evidencias de instalación, módulos y carga masiva en `PROYECTO/evidencias/` | En progreso: `instalacion/` completo (11). Faltan repetir 05, 06 y 11 de `carga_masiva/` (ya en GTQ; antes regenerar los PDF con `08_exportar_facturas.py --todas`) y las 12 de `modulos/` (lista en su `NOTAS.md`) |
-| 1 | ERP: módulos instalados y configurados (compañía, almacenes, impuestos) | Completado en local (`datos/01_configurar_erp.py`) |
-| 1 | Datos maestros: productos (con imagen), clientes, proveedores | Completado en local (`datos/02_datos_maestros.py`): 60 productos, 80 clientes, 14 proveedores |
-| 1 | Empleados, cargos y departamentos | Completado en local (`datos/03_empleados.py`): 35 empleados, 6 cargos, 5 departamentos |
-| 1 | Ventas, cotizaciones, compras, materiales, facturas + 50 PDF | Completado en local (`datos/cargar_todo.py`): 150 ventas, 20 cotizaciones, 100 compras, 60 materiales, 250 facturas, 150 PDF |
-| 1 | Gestor documental (OCA `dms`) con documentos y etiquetas | Completado en local (`datos/09_gestor_documental.py`): 15 documentos, 3 carpetas, 12 etiquetas |
-| 1 | Consultas SQL de calificación | Completado (`sql/consultas_calificacion.sql`, secciones 0-7); el Bloque 2 agrega la sección 8 |
-| 1 | Correcciones a scripts del Bloque 1 detectadas al desplegar en base nueva | Pendiente: `infra/obtener_addons.sh` (crear `../addons` antes del `cd`) y `datos/01_configurar_erp.py` (`try_loading` con `[]` como primer argumento y volver a fijar GTQ y la lista de precios en GTQ). En el servidor se corrigieron a mano (`evidencias/carga_masiva/NOTAS.md`) |
-| 2 | Tienda en línea: catálogo, carrito, impuestos, envío, pago, factura por correo | En progreso (otra integrante): pagos de prueba configurados. Falta confirmar: solo los 60 `QM-` publicados, IVA 12 % en el carrito, 2-3 métodos de envío, factura automática por correo, evidencias en `evidencias/tienda/` |
-| 2 | Google Analytics 4: eventos, segmentos, exploraciones, audiencias | En progreso (`ga4/configuracion.md`, sección *Estado*): eventos de comercio electrónico llegando con `addons/qm_ga4_ecommerce`; faltan audiencias, segmentos, exploraciones y exportes |
-| 2 | RPA UiPath | Pendiente: generador de carpetas de prueba, robot en UiPath Studio, staging `quetzalmart_rpa`, carga a Odoo, sección 8 del SQL, diagrama y evidencias |
-| 2 | Marketing: correo de campaña posterior a la compra | Pendiente: cuenta Gmail dedicada (en creación), servidor de correo saliente en Odoo, plantilla HTML de campaña, regla que la envía después de la compra web, prueba completa |
-| — | Manuales 1, 2 y 3 | Pendiente |
-
-
-## Estado actualizado por naomi
-## 5. Estado por componente
+Una sola tabla: actualízala en el mismo commit que completa o cambia cada componente.
+Verificado en el servidor el 2026-10-09 (consultas de `sql/consultas_calificacion.sql`).
 
 | Componente | Estado | Qué falta |
 |---|---|---|
-| ERP: módulos, compañía, almacenes, impuestos | Hecho | Capturas |
-| Datos maestros, empleados, materiales | Hecho | Capturas |
-| Ventas, cotizaciones, compras, facturas y 150 PDF | Hecho | Repetir la carga en el servidor si no se hizo; capturas |
-| Gestor documental | Hecho | Capturas del filtrado por etiquetas |
-| Consultas SQL (secciones 0 a 7) | Hecho | Sección 8 con las consultas del RPA y de la tienda |
-| Servidor en la nube (Lightsail) | Odoo funcionando por HTTP | HTTPS con Caddy; corregir `CLAUDE.md` |
-| Tienda: catálogo, categorías, carrito, IVA, envío | Hecho | Capturas |
-| Pago por transferencia bancaria | Hecho | Decidir si se agrega pago contra entrega y/o Stripe en modo de prueba |
-| Confirmación automática del pedido | Hecho (regla de automatización) | Capturas de la regla |
-| Plantilla del correo de la compra | Se genera con el diseño nuevo | **Por verificar** que el correo llegue a la bandeja |
-| Correo de campaña posterior a la compra | Plantilla lista | **Por verificar** la regla y el retraso |
-| Factura por correo | Sin implementar | Decidir si va adjunta al correo de la compra |
-| Oportunidad en el CRM al registrarse | Sin implementar | Regla de automatización |
-| Google Analytics 4 | Sin empezar | Propiedad, eventos, segmentos, exploraciones, audiencias |
-| RPA con UiPath | Sin empezar | Robot, generador de Excel de prueba, carga a la base |
-| Manuales 1, 2 y 3 | Sin empezar | Este documento es el insumo |
-
----
+| Nube: AWS Lightsail `quetzalmart-erp` (us-east-1), IP estática, firewall, SSH | Hecho (`evidencias/nube/`) | — |
+| Despliegue: Odoo 18 + PostgreSQL 16 + Caddy con HTTPS en `<ip-con-guiones>.sslip.io`, 5432 restringido | Hecho (`evidencias/instalacion/`) | Respaldo en `~/respaldos/` del servidor; falta un snapshot de Lightsail |
+| ERP: compañía en GTQ, plan GT, IVA 12 %, almacenes GT / MX / SV | Hecho (`datos/01_configurar_erp.py`, ya con las correcciones de `try_loading` y GTQ) | Capturas de `evidencias/modulos/` |
+| Datos maestros, 35 empleados / 6 cargos / 5 departamentos, 60 materiales | Hecho (`datos/02` a `04`) | Capturas |
+| 150 ventas, 100 compras con factura, 150 facturas de cliente y sus PDF | Hecho (`datos/05`, `06`, `08`) | Repetir capturas 05, 06 y 11 de `evidencias/carga_masiva/` |
+| Cotizaciones: 20 de venta y 20 de compra | Script listo (`datos/07_cotizaciones.py`) | Ejecutarlo en el servidor (hoy hay 12 y 8) |
+| Gestor documental (OCA `dms`): 15 documentos, 3 carpetas, 12 etiquetas | Hecho (`datos/09`) | Capturas del filtrado por etiquetas |
+| Consultas SQL | Secciones 0 a 8 hechas | Sección 9 (RPA) |
+| Tienda: 60 productos `QM-` publicados con imagen, descripción e IVA; envío estándar Q30; transferencia bancaria | Hecho (`datos/10`, `11` + configuración en pantalla) | Capturas en `evidencias/tienda/`; considerar Stripe en modo de prueba |
+| Correo de la compra y de campaña (Brevo, `ventas@adasystemsgt.com`) | Funciona: la campaña llega 3 min después (regla "Confirmar pedidos de la tienda") | Quitar el tercer correo "Orden pendiente" (sale de `odoobot@example.com`); nombre del remitente "QuetzalMart"; probar con temp-mail.org; capturas en `evidencias/mkt/` |
+| Factura del pedido web por correo y en la carpeta de PDF | Sin implementar (los pedidos web quedan "por facturar") | Facturar al confirmar y adjuntar la factura al correo de la compra |
+| CRM | Sin datos (0 oportunidades) | Oportunidades de ejemplo y regla que cree una al registrarse en la tienda |
+| Google Analytics 4 | En progreso (`ga4/configuracion.md`): eventos llegando con `addons/qm_ga4_ecommerce` | Segmentos, exploraciones, 3 audiencias (ninguna de abandono de carrito), exportes y capturas |
+| RPA UiPath | Pendiente | Todo; ver *Aclaraciones del auxiliar* |
+| Manuales 1, 2 y 3 | Pendiente | Guía completa en `PROYECTO/evidencias/README_manuales.md` |
