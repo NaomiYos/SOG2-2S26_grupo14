@@ -34,7 +34,13 @@ En Windows, si la consola muestra mal los acentos: `python -X utf8 <script>`.
 | `07_cotizaciones.py` | 20 cotizaciones sin confirmar: 12 a clientes y 8 solicitudes de presupuesto a proveedores |
 | `08_exportar_facturas.py` | Exporta a `PROYECTO/facturas_pdf/` el PDF de cada factura de cliente publicada (omite las ya exportadas) |
 | `09_gestor_documental.py` | Instala el gestor documental OCA `dms`: carpetas, grupo de acceso, 12 etiquetas en 4 categorías y los 15 PDF de `PROYECTO/dms/documentos/`, cada uno también adjunto a su factura, empleado o empresa de outsourcing |
-| `cargar_todo.py` | Ejecuta todos los pasos anteriores en orden |
+| `10_publicar_tienda.py` | Publica en la tienda los productos que se venden (no los materiales) |
+| `11_categorias_tienda.py` | Categorías de la tienda a partir de las categorías internas |
+| `12_plantillas_correo.py "QuetzalMart <ventas@dominio>"` | Plantillas del correo de la compra y del de campaña, con sus imágenes |
+| `13_regla_confirmacion.py` | Reglas de automatización: confirmar los pedidos web por transferencia; facturar, guardar el PDF en el gestor documental, marcar ganada la oportunidad del CRM y enviar el correo de la compra (con la factura) y el de campaña; crear una oportunidad cuando alguien se registra en la tienda |
+| `14_configurar_rpa.py` | Usuario Robot RPA (lo usa el robot de UiPath para importar) y la asignación de la columna `website` |
+| `15_tienda_crm_pagos.py "QuetzalMart <ventas@dominio>"` | Módulos `qm_tienda` y `payment_demo`; precios con IVA en la tienda; remitente y correo de la compañía; pago con tarjeta en modo de prueba; carpeta "Facturas de clientes" con todas las facturas de cliente; 12 oportunidades de ejemplo en el CRM. Ejecutar antes de `13` |
+| `cargar_todo.py` | Ejecuta en orden los pasos 01 a 09 (los de la tienda, 10 a 15, se corren aparte en ese orden: 10, 11, 12, 15, 13, 14) |
 | `generar_imagenes.py` | Regenera `imagenes/productos/*.jpg` de productos y materiales (solo Windows + `pip install pillow`); las imágenes ya están en el repo |
 | `generar_logo.py` | Regenera `imagenes/logo_quetzalmart.png` (solo Windows + Pillow) |
 | `generar_documentos.py` | Regenera los 15 PDF de `PROYECTO/dms/documentos/` con datos de Odoo (`pip install reportlab`); ya están en el repo |
