@@ -191,15 +191,15 @@ Módulos instalados en el servidor (verificado):
 | Módulo (nombre técnico) | Qué hace en QuetzalMart | Datos cargados | Menú |
 |---|---|---|---|
 | Ventas (`sale_management`) | Cotizaciones, órdenes de venta, entregas y facturación al cliente | 158 ventas confirmadas (150 cargadas + pedidos web), cotizaciones a clientes | Ventas > Órdenes |
-| CRM (`crm`, `sale_crm`, `website_crm`) | Oportunidades de venta, seguimiento de clientes | **Pendiente**: hoy no hay oportunidades (ver sección 10) | CRM > Ventas > Mi flujo |
+| CRM (`crm`, `sale_crm`, `website_crm`) | Oportunidades de venta, seguimiento de clientes | 12 oportunidades de ejemplo; una nueva por cada cliente que se registra en la tienda, que queda *Ganada* al comprar | CRM > Ventas > Mi flujo |
 | Compras (`purchase`) | Solicitudes de cotización, órdenes de compra, recepción y factura de proveedor | 100 compras confirmadas, recibidas y facturadas (abr-sep 2026), solicitudes a proveedores | Compras > Órdenes |
 | Inventario (`stock`) | 3 almacenes (GT, MX, SV), recepciones, entregas, existencias | Existencias de 60 productos y 60 materiales por sucursal | Inventario > Resumen |
 | Facturación (`account`, `l10n_gt`) | Plan contable de Guatemala, IVA 12 %, facturas de cliente y proveedor, pagos | 150 facturas de cliente, 100 de proveedor | Facturación > Clientes / Proveedores |
 | Empleados (`hr`) | Departamentos, cargos, jefes directos, lugar de trabajo | 35 empleados, 6 cargos, 5 departamentos | Empleados |
 | Contactos (`contacts`) | Clientes, proveedores y empresas de outsourcing con etiquetas | 80 clientes (60 personas, 20 empresas), 14 proveedores, 5 empresas de outsourcing | Contactos |
-| Sitio web y Comercio electrónico (`website`, `website_sale`, `website_sale_stock`, `delivery`) | Tienda en línea con catálogo, carrito, IVA, envío y pago | 60 productos publicados con imagen, descripción y precio; envío estándar Q30; transferencia bancaria | Sitio web |
-| Pagos (`payment_custom`) | Método de pago "Transferencia bancaria" | — | Facturación > Configuración > Proveedores de pago |
-| Reglas de automatización (`base_automation`) | Confirma los pedidos web y programa el correo de campaña | Regla "Confirmar pedidos de la tienda" | Ajustes > Técnico > Automatización |
+| Sitio web y Comercio electrónico (`website`, `website_sale`, `website_sale_stock`, `delivery`) | Tienda en línea con catálogo, carrito, IVA, envío y pago | 60 productos publicados con imagen, descripción y precio con IVA; envío estándar Q30; tarjeta en modo de prueba y transferencia bancaria | Sitio web |
+| Pagos (`payment_demo`, `payment_custom`) | "Tarjeta de crédito o débito (modo de prueba)" y "Transferencia bancaria" | Con tarjeta la factura queda pagada | Facturación > Configuración > Proveedores de pago |
+| Reglas de automatización (`base_automation`) y módulo propio `qm_tienda` | Confirman y facturan los pedidos web, envían el correo de la compra con la factura y el de campaña, y alimentan el CRM | 3 reglas (ver sección 8) | Ajustes > Técnico > Automatización |
 | Gestor documental (OCA `dms`) | Carpetas, documentos y etiquetas para filtrar | 15 documentos en 3 carpetas, 12 etiquetas en 4 categorías | Documentos |
 | `qm_ga4_ecommerce` (módulo propio) | Completa los eventos de GA4 que Odoo no emite (`begin_checkout`, `view_cart`, `remove_from_cart`, ...) | — | Aplicaciones, buscar `qm_ga4` |
 
@@ -246,7 +246,7 @@ paso a paso (faltan todas; guardarlas en `evidencias/operacion/`):
 | Venta | Ventas > Nuevo > cliente y productos (IVA 12 % automático) > *Enviar* > *Confirmar* > botón *Entrega* > *Validar* > *Crear factura* > *Confirmar* > *Registrar pago* |
 | Clientes en el CRM | CRM > Nuevo (oportunidad con cliente e ingreso esperado) > mover entre etapas > *Nueva cotización* > *Ganado*; y el cliente creado desde el registro en la tienda (Contactos) |
 | Empleados | Empleados > Nuevo > nombre, departamento, cargo, jefe directo, lugar de trabajo; vista de organigrama |
-| Facturas | Facturación > Clientes > Facturas > una factura > *Vista previa* / *Imprimir* (PDF con logo) y la carpeta `facturas_pdf/` |
+| Facturas | Facturación > Clientes > Facturas > una factura > *Vista previa* / *Imprimir* (PDF con logo), la carpeta *Facturas de clientes* del gestor documental y la carpeta `facturas_pdf/` |
 
 ### 4.4 Sección 4: RPA (1 pt)
 
@@ -421,11 +421,12 @@ flowchart TD
   H -- "No" --> H1(["Carrito abandonado:<br/>entra en el segmento de abandono de GA4"])
   H -- "Sí" --> I["Inicia el pago: evento begin_checkout"]
   I --> J{"¿Tiene cuenta?"}
-  J -- "No" --> J1["Se registra: queda como cliente en Contactos / CRM"] --> K
+  J -- "No" --> J1["Se registra: queda como cliente en Contactos<br/>y se crea su oportunidad en el CRM"] --> K
   J -- "Sí" --> K["Dirección y método de envío"]
   K --> L["Elige el método de pago y paga"]
   L --> M["Pedido confirmado: evento purchase"]
-  M --> N["Correo 1: confirmación de la compra con el comprobante adjunto"]
+  M --> M1["Factura automática: su PDF queda en Facturas de clientes;<br/>la oportunidad del CRM pasa a Ganada"]
+  M1 --> N["Correo 1: confirmación de la compra con la orden y la factura adjuntas"]
   N --> O["Correo 2 (minutos después): campaña de marketing"]
   M --> P["Bodega prepara y entrega el pedido (5.3)"]
   B -- "En la tienda física" --> Q["Visita la sucursal (GT, MX o SV)"]
@@ -499,12 +500,17 @@ Vive en la base de datos. Hay que **documentarla con capturas**. Valores verific
 |---|---|---|
 | Comercio electrónico, Envío | Aplicaciones | Instalados **después** de `cargar_todo.py` |
 | Método de envío | Inventario > Configuración > Métodos de envío | "Envío estándar", tarifa fija Q30 |
-| Proveedor de pago | Facturación > Configuración > Proveedores de pago | "Transferencia bancaria" (el pago queda pendiente hasta confirmarlo) |
+| Proveedores de pago | Facturación > Configuración > Proveedores de pago | "Pago en modo de prueba" (tarjeta; el pago queda hecho y la factura pagada) y "Transferencia bancaria" (el pago queda pendiente hasta confirmarlo) |
 | Inicio de sesión al pagar | Sitio web > Configuración > Ajustes > Tienda - Proceso de pago | Obligatorio; registro libre de clientes |
 | Google Analytics | Sitio web > Configuración > Ajustes | ID `G-34SH2SJWGK`; barra de cookies desactivada |
 | Servidor de correo saliente | Ajustes > Técnico > Servidores de correo saliente | `smtp-relay.brevo.com`, puerto 587, TLS, filtro DE `adasystemsgt.com` |
 | Dirección pública | Ajustes > Técnico > Parámetros del sistema | `web.base.url` = dirección HTTPS y `web.base.url.freeze` = True |
-| Regla "Confirmar pedidos de la tienda" | Ajustes > Técnico > Automatización | Al pasar un pedido web a *Cotización enviada* lo confirma (envía el correo de la compra) y programa el correo de campaña 3 minutos después |
+| Regla "Confirmar pedidos de la tienda" | Ajustes > Técnico > Automatización | Al pasar un pedido web a *Cotización enviada* (pago por transferencia) lo confirma |
+| Regla "Facturar y notificar pedidos de la tienda" | Ajustes > Técnico > Automatización | Al confirmarse un pedido web (por transferencia o con tarjeta): crea y publica la factura, guarda su PDF en *Facturas de clientes*, marca *Ganada* la oportunidad del cliente, envía el correo de la compra con la orden y la factura en PDF y programa el de campaña 3 minutos después |
+| Regla "Oportunidad al registrarse en la tienda" | Ajustes > Técnico > Automatización | Al registrarse un cliente en la tienda crea su oportunidad en el CRM (equipo *Website*) |
+| Módulo `qm_tienda` | Aplicaciones | Omite los correos estándar de Odoo para los pedidos web ("Orden pendiente" y la confirmación sin factura) |
+| Precios con IVA | Sitio web > Configuración > Ajustes > Tienda - Productos | *Precios con impuestos incluidos* |
+| Correo de la compañía | Ajustes > Compañías | `ventas@adasystemsgt.com`; remitente de las plantillas "QuetzalMart" <ventas@adasystemsgt.com> |
 | Plantillas de correo | Creadas por `12_plantillas_correo.py` | "QuetzalMart - Confirmación de compra" y "QuetzalMart - Campaña posterior a la compra"; HTML en `marketing/plantillas/`, imágenes en `marketing/imagenes/` |
 | Diseño del sitio | Editor del sitio web | Colores de marca `#0B7A4B` (verde) y `#C8102E` (rojo), logo de QuetzalMart |
 
@@ -541,12 +547,7 @@ No tomen capturas definitivas de estos puntos hasta que estén listos (ver la ta
 
 | Pendiente | Afecta a |
 |---|---|
-| Cargar en el servidor las cotizaciones 20 y 20 | `carga_masiva/03`, `06`, `06b` |
-| Facturar automáticamente los pedidos web y adjuntar la factura al correo de la compra | Manual 1 (tienda, correos), diagrama 5.5, capturas `mkt/` |
-| Quitar el tercer correo "Orden pendiente" y poner "QuetzalMart" como nombre del remitente | Capturas `mkt/` |
-| Oportunidades en el CRM y regla que cree una al registrarse en la tienda | `modulos/09`, `operacion/`, Manual 1 sección 2 |
-| Posible pago con Stripe en modo de prueba | Capturas `tienda/`, sección 8 |
-| RPA | Manual 1 sección 4, diagrama 5.1, `rpa/` |
+| RPA: capturas 01 a 14 (el robot ya funciona) | Manual 1 sección 4, `rpa/` |
 | GA4: segmentos, exploraciones, audiencias y exportes | Manual 3, `ga4/` |
 
 ---
