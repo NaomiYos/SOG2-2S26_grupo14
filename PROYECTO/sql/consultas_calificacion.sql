@@ -31,6 +31,9 @@ FROM (
     UNION ALL SELECT 9, 'Facturas de venta (cliente)', 50,
            (SELECT count(*) FROM account_move WHERE move_type = 'out_invoice' AND state = 'posted')
     UNION ALL SELECT 10, 'Documentos en el gestor documental', 15, (SELECT count(*) FROM dms_file)
+    UNION ALL SELECT 11, 'Facturas de cliente en la carpeta del gestor documental', 50,
+           (SELECT count(*) FROM dms_file f JOIN dms_directory d ON d.id = f.directory_id
+            WHERE d.name = 'Facturas de clientes')
 ) r
 ORDER BY orden;
 
@@ -255,6 +258,18 @@ FROM ir_attachment a
 WHERE a.name LIKE 'Factura\_%' OR a.name LIKE 'Contrato\_%'
 GROUP BY a.res_model;
 
+-- 7.4 Facturas de cliente en la carpeta "Facturas de clientes" (las más recientes primero)
+-- Esperado: una por cada factura de cliente publicada; las de la tienda llegan solas al comprar
+-- (regla "Facturar y notificar pedidos de la tienda").
+SELECT f.name                      AS documento,
+       f.create_date::timestamp(0) AS agregado,
+       f.size                      AS bytes
+FROM dms_file f
+JOIN dms_directory d ON d.id = f.directory_id
+WHERE d.name = 'Facturas de clientes'
+ORDER BY f.id DESC
+LIMIT 15;
+
 
 -- -----------------------------------------------------------------------------
 -- 8. TIENDA EN LÍNEA, CRM Y FACTURAS DE LA CALIFICACIÓN
@@ -346,6 +361,39 @@ JOIN sale_order so ON so.id = m.res_id AND m.model = 'sale.order'
 WHERE so.website_id IS NOT NULL AND m.subject IS NOT NULL
 ORDER BY m.date DESC
 LIMIT 20;
+
+
+-- 8.7 Pedido web de punta a punta: pago, factura, PDF en el gestor documental y oportunidad del CRM
+-- Esperado para la compra del auxiliar: pedido confirmado; con tarjeta (modo de prueba) la factura
+-- queda pagada y con transferencia queda por cobrar; su PDF en la carpeta; la oportunidad, ganada.
+SELECT so.name                                              AS pedido,
+       so.create_date::timestamp(0)                         AS creado,
+       p.name                                               AS cliente,
+       so.state                                             AS estado,
+       coalesce(pm.name->>'es_419', pm.name->>'en_US')      AS metodo_de_pago,
+       t.state                                              AS pago,
+       f.name                                               AS factura,
+       f.payment_state                                      AS cobro,
+       EXISTS (SELECT 1 FROM dms_file df
+               WHERE df.name = 'Factura ' || replace(f.name, '/', '-') || '.pdf') AS pdf_en_carpeta,
+       l.name                                               AS oportunidad,
+       coalesce(s.name->>'es_419', s.name->>'en_US')        AS etapa_crm
+FROM sale_order so
+JOIN res_partner p ON p.id = so.partner_id
+LEFT JOIN LATERAL (SELECT tx.* FROM sale_order_transaction_rel r JOIN payment_transaction tx ON tx.id = r.transaction_id
+                   WHERE r.sale_order_id = so.id ORDER BY tx.id DESC LIMIT 1) t ON true
+LEFT JOIN payment_method pm ON pm.id = t.payment_method_id
+LEFT JOIN LATERAL (SELECT am.* FROM sale_order_line sl
+                   JOIN sale_order_line_invoice_rel ir ON ir.order_line_id = sl.id
+                   JOIN account_move_line ml ON ml.id = ir.invoice_line_id
+                   JOIN account_move am ON am.id = ml.move_id
+                   WHERE sl.order_id = so.id AND am.move_type = 'out_invoice'
+                   ORDER BY am.id DESC LIMIT 1) f ON true
+LEFT JOIN crm_lead l ON l.id = so.opportunity_id
+LEFT JOIN crm_stage s ON s.id = l.stage_id
+WHERE so.website_id IS NOT NULL AND so.state = 'sale'
+ORDER BY so.id DESC
+LIMIT 10;
 
 
 -- -----------------------------------------------------------------------------
