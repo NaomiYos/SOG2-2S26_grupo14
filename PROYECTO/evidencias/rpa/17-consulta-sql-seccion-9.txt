@@ -1,0 +1,34 @@
+               tipo                | cargados |        desde        |        hasta        
+-----------------------------------+----------+---------------------+---------------------
+ Clientes                          |       10 | 2026-10-10 01:50:59 | 2026-10-10 01:50:59
+ Productos                         |        8 | 2026-10-10 01:51:12 | 2026-10-10 01:51:12
+ Productos publicados en la tienda |        6 |                     | 
+ Ajustes de inventario             |        5 | 2026-10-10 01:51:26 | 2026-10-10 01:51:26
+(4 rows)
+
+            cliente            |  tipo   |            email            |      phone       |        city         | pais |    nit    |          sitio_web          |       etiquetas        | referencia  |       cargado       
+-------------------------------+---------+-----------------------------+------------------+---------------------+------+-----------+-----------------------------+------------------------+-------------+---------------------
+ Abarrotería Doña Tere         | Empresa | tere@abarroteria.example    | +502 7765 2200   | Antigua Guatemala   | GT   |           |                             | Minorista, Cliente RPA | RPA-CLI-002 | 2026-10-10 01:50:59
+ Ana Sofía Ramírez             | Persona | anasofia@correo.example     | +52 33 1122 3344 | Guadalajara         | MX   |           |                             |                        |             | 2026-10-10 01:50:59
+ Carlos Ajú Tzoc               | Persona | carlos.aju@correo.example   |                  | Quetzaltenango      | GT   |           |                             |                        |             | 2026-10-10 01:50:59
+ Hotel Casa del Lago           | Empresa | compras@casadellago.example | +502 7762 0000   | Panajachel          | GT   | 7788990-0 | https://casadellago.example | Mayorista              | RPA-CLI-010 | 2026-10-10 01:50:59
+ José Hernández Portillo       | Persona | jose.hp@correo.example      | +503 7788 9900   | Santa Ana           | SV   |           |                             |                        |             | 2026-10-10 01:50:59
+ Lucía Méndez Orellana         | Persona | lucia.mendez@correo.example | +502 5512 3344   | Mixco               | GT   |           |                             |                        |             | 2026-10-10 01:50:59
+ María José Cifuentes          | Persona | mjcifuentes@correo.example  |                  |                     |      |           |                             |                        |             | 2026-10-10 01:50:59
+ Pupusería Los Volcanes        | Empresa | ventas@losvolcanes.example  | +503 2222 3344   | San Salvador        | SV   |           |                             | Cliente RPA            | RPA-CLI-007 | 2026-10-10 01:50:59
+ Restaurante El Comal          | Empresa | pedidos@elcomal.example     | +52 55 4455 6677 | Ciudad de México    | MX   |           | https://elcomal.example     | Mayorista              | RPA-CLI-005 | 2026-10-10 01:50:59
+ Supermercado La Esquina, S.A. | Empresa | compras@laesquina.example   | +502 2334 1100   | Ciudad de Guatemala | GT   | 4567890-1 | https://laesquina.example   | Mayorista              | RPA-CLI-001 | 2026-10-10 01:50:59
+(10 rows)
+
+     external_id     | referencia |                producto                |  tipo   | precio_q | publicado | cantidad_a_la_mano |       cargado       
+---------------------+------------+----------------------------------------+---------+----------+-----------+--------------------+---------------------
+ RPA_PRUEBA_PROD_001 | RPA-001    | Tortillas de maíz amarillo 30 u        | consu   |     12.5 | t         |              40.00 | 2026-10-10 01:51:12
+ RPA_PRUEBA_PROD_002 | RPA-002    | Frijol volteado en bolsa 400 g         | consu   |     9.75 | t         |              60.00 | 2026-10-10 01:51:12
+ RPA_PRUEBA_PROD_003 | RPA-003    | Chocolate de mesa artesanal 4 tabletas | consu   |     22.0 | t         |              25.00 | 2026-10-10 01:51:12
+ RPA_PRUEBA_PROD_004 |            | Servicio de entrega express            | service |     35.0 | t         |                  0 | 2026-10-10 01:51:12
+ RPA_PRUEBA_PROD_005 | RPA-005    | Canasta navideña ejecutiva             | consu   |    450.0 | f         |                  0 | 2026-10-10 01:51:12
+ RPA_PRUEBA_PROD_006 | RPA-006    | Café molido de altura 454 g            | consu   |     48.0 | t         |              30.00 | 2026-10-10 01:51:12
+ RPA_PRUEBA_PROD_007 |            | Asesoría de recetas para eventos       | service |    150.0 | f         |                  0 | 2026-10-10 01:51:12
+ RPA_PRUEBA_PROD_010 | RPA-010    | Horchata en polvo 400 g                | consu   |     18.5 | t         |              45.00 | 2026-10-10 01:51:12
+(8 rows)
+

@@ -257,6 +257,8 @@ capturas de cada actividad de UiPath Studio, la ejecución, y el resultado en el
 Reglas del auxiliar que hay que explicar en el texto (foros *RPA*, *Datos RPA* y *dudas proyecto*):
 
 - El robot **no usa la API de Odoo**; carga los datos con la pantalla *Importar* de Odoo.
+- Guía de construcción, decisiones y lista de las 17 capturas: `PROYECTO/rpa/README.md`. Consultas: sección 9 de `consultas_calificacion.sql`.
+- "Cantidad a la mano" no se puede importar junto con el producto en Odoo: el robot la carga como ajuste de inventario físico.
 - Solo se toman los archivos que tienen una hoja llamada exactamente `clientes` o `productos`; el criterio es **el nombre de la hoja**, no el de la carpeta ni el del archivo.
 - Columnas de `clientes`: Name, Company Type, Related Company, Email, Phone, Street, Street2, City, State, Zip, Country, Tax ID, Website, Tags, Reference, Notes. Obligatorias: Name y Company Type.
 - Columnas de `productos`: External ID, Name, Product Type, Internal Reference, Barcode, Sales Price, Cost, Weight, Sales Description, Product Values, Cantidad a la mano, Está publicado. Obligatorias: External ID, Name y Product Type.
@@ -281,40 +283,37 @@ en Mermaid. Para pasarlos al PDF: pegarlos en https://mermaid.live y exportar a 
 
 ### 5.1 Robot de UiPath (2 pts)
 
-Borrador basado en las reglas del enunciado y del foro. **Ajústenlo a lo que construya quien haga el robot** (nombres de
-actividades reales de UiPath).
+Refleja el diseño de `PROYECTO/rpa/README.md` (código en `PROYECTO/rpa/codigo/`). Si quien construye el robot cambia
+algún paso, ajusten el diagrama con los nombres reales de las actividades.
 
 ```mermaid
 flowchart TD
-  A([Inicio]) --> B["Pedir o leer la carpeta raíz<br/>(se entrega el día de la calificación)"]
-  B --> C["Listar todos los archivos .xlsx y .xls<br/>de la carpeta y sus subcarpetas"]
+  A([Inicio]) --> B["Select Folder: el auxiliar elige la carpeta raíz"]
+  B --> B1["Get Secure Credential: usuario Robot RPA desde Windows"]
+  B1 --> C["Listar los .xls y .xlsx de la carpeta y sus subcarpetas<br/>(sin los temporales ~$)"]
   C --> D{"¿Quedan archivos?"}
-  D -- "No" --> L
-  D -- "Sí" --> E["Abrir el libro y obtener los nombres de sus hojas"]
-  E --> F{"¿Tiene hoja 'clientes'?"}
-  F -- "Sí" --> G["Leer la hoja clientes"]
-  G --> H{"¿Name y Company Type con valor?"}
-  H -- "Sí" --> I["Agregar fila a la tabla de clientes"]
-  H -- "No" --> J["Registrar fila rechazada"]
-  F -- "No" --> K
-  I --> K{"¿Tiene hoja 'productos'?"}
-  J --> K
-  K -- "Sí" --> K1["Leer la hoja productos"]
-  K1 --> K2{"¿External ID, Name y Product Type con valor?"}
-  K2 -- "Sí" --> K3["Agregar fila a la tabla de productos"]
-  K2 -- "No" --> K4["Registrar fila rechazada"]
-  K -- "No" --> D
-  K3 --> D
-  K4 --> D
-  L["Quitar duplicados<br/>(clientes por Name + Email, productos por External ID)"] --> M["Escribir clientes.xlsx y productos.xlsx consolidados"]
-  M --> N["Abrir el navegador e iniciar sesión en Odoo"]
-  N --> O["Contactos > Importar > subir clientes.xlsx > Probar > Importar"]
-  O --> P["Inventario > Productos > Importar > subir productos.xlsx > Probar > Importar"]
-  P --> Q{"¿Odoo reportó errores?"}
-  Q -- "Sí" --> R["Guardar captura y mensaje de error en el registro"]
-  Q -- "No" --> S["Registrar cantidades cargadas"]
-  R --> T([Fin: resumen de archivos, filas cargadas y rechazadas])
-  S --> T
+  D -- "Sí" --> E["Use Excel File: abrir el libro en solo lectura"]
+  E --> F{"Por cada hoja:<br/>¿se llama 'clientes' o 'productos'?"}
+  F -- "No" --> F1["Ignorar la hoja"] --> D
+  F -- "Sí" --> G["Read Range (valores sin formato)<br/>+ marcar archivo, hoja y fila"]
+  G --> H["Merge Data Table en la tabla de clientes o de productos"] --> D
+  E -. "Error al abrir" .-> E1["Registrar advertencia y seguir"] --> D
+  D -- "No" --> I["Consolidar (Invoke Code)"]
+  I --> I1{"¿Tiene los campos obligatorios?<br/>clientes: Name, Company Type<br/>productos: External ID, Name, Product Type"}
+  I1 -- "No" --> I2["Agregar a rechazos.xlsx con el motivo"]
+  I1 -- "Sí" --> I3["Normalizar: encabezados técnicos, Company/Person, Goods/Service,<br/>códigos sin decimales, publicado True/False"]
+  I3 --> I4{"¿Duplicado?<br/>(nombre + correo / External ID)"}
+  I4 -- "Sí" --> I5["Descartar"]
+  I4 -- "No" --> J["Escribir clientes.xlsx, productos.xlsx y existencias.xlsx"]
+  J --> K["Chrome: iniciar sesión en Odoo como Robot RPA"]
+  K --> L["Contactos > Importar registros > clientes.xlsx"]
+  L --> M["Productos > Importar registros > productos.xlsx"]
+  M --> N["Inventario físico > Importar registros > existencias.xlsx > Aplicar todo"]
+  L & M & N --> P{"Al Probar: ¿valores que no existen<br/>(etiqueta, país, departamento)?"}
+  P -- "Sí" --> P1["Etiquetas: crear nuevos valores<br/>Demás: dejar vacío; Probar otra vez"]
+  P -- "No" --> Q["Importar"]
+  P1 --> Q
+  Q --> R([Fin: resumen de cargados, duplicados y rechazados])
 ```
 
 ### 5.2 Compras a proveedores (3 pts)
