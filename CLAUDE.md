@@ -143,7 +143,7 @@ La base de Odoo se llama `quetzalmart`. Ningún script debe asumir otro nombre.
 ## Estado del proyecto
 
 Una sola tabla: actualízala en el mismo commit que completa o cambia cada componente.
-Verificado en el servidor el 2026-10-09 (consultas de `sql/consultas_calificacion.sql`).
+Verificado en el servidor el 2026-10-09 (consultas de `sql/consultas_calificacion.sql` y revisión de reglas, correos y pagos).
 
 | Componente | Estado | Qué falta |
 |---|---|---|
@@ -152,12 +152,12 @@ Verificado en el servidor el 2026-10-09 (consultas de `sql/consultas_calificacio
 | ERP: compañía en GTQ, plan GT, IVA 12 %, almacenes GT / MX / SV | Hecho (`datos/01_configurar_erp.py`, ya con las correcciones de `try_loading` y GTQ) | Capturas de `evidencias/modulos/` |
 | Datos maestros, 35 empleados / 6 cargos / 5 departamentos, 60 materiales | Hecho (`datos/02` a `04`) | Capturas |
 | 150 ventas, 100 compras con factura, 150 facturas de cliente y sus PDF | Hecho (`datos/05`, `06`, `08`) | Repetir capturas 05, 06 y 11 de `evidencias/carga_masiva/` |
-| Cotizaciones: 20 de venta y 20 de compra | Script listo (`datos/07_cotizaciones.py`) | Ejecutarlo en el servidor (hoy hay 12 y 8) |
+| Cotizaciones: 20 de venta y 20 de compra | Hecho (`datos/07_cotizaciones.py`, ejecutado en el servidor) | Capturas |
 | Gestor documental (OCA `dms`): 15 documentos, 3 carpetas, 12 etiquetas | Hecho (`datos/09`) | Capturas del filtrado por etiquetas |
-| Consultas SQL | Secciones 0 a 9 hechas | Probar la 9 con la primera carga del robot |
+| Consultas SQL | Secciones 0 a 9 hechas y probadas en el servidor | — |
 | Tienda: 60 productos `QM-` publicados con imagen, descripción e IVA; envío estándar Q30; transferencia bancaria | Hecho (`datos/10`, `11` + configuración en pantalla) | Capturas en `evidencias/tienda/`; considerar Stripe en modo de prueba |
-| Correo de la compra y de campaña (Brevo, `ventas@adasystemsgt.com`) | Funciona: la campaña llega 3 min después (regla "Confirmar pedidos de la tienda") | Quitar el tercer correo "Orden pendiente" (sale de `odoobot@example.com`); nombre del remitente "QuetzalMart"; probar con temp-mail.org; capturas en `evidencias/mkt/` |
-| Factura del pedido web por correo y en la carpeta de PDF | Sin implementar (los pedidos web quedan "por facturar") | Facturar al confirmar y adjuntar la factura al correo de la compra |
+| Correo de la compra y de campaña (Brevo, `ventas@adasystemsgt.com`) | Funciona: correo de la compra con la factura y la orden en PDF; la campaña llega 3 min después (regla "Confirmar pedidos de la tienda", `datos/13_regla_confirmacion.py`) | Quitar el tercer correo "Orden pendiente" (sale de `odoobot@example.com`); remitente "quetzalito mart" → "QuetzalMart"; correo de la compañía `info@quetzalmart.com` (dominio ajeno); probar con temp-mail.org; capturas en `evidencias/mkt/` |
+| Factura del pedido web por correo y en la carpeta de PDF | Hecho desde el 2026-10-09 (regla de `datos/13`: confirma, factura, publica y adjunta el PDF; probado con S00180) | Los 8 pedidos web anteriores siguen "por facturar"; PDF de las facturas nuevas en la carpeta (`datos/08`) |
 | CRM | Sin datos (0 oportunidades) | Oportunidades de ejemplo y regla que cree una al registrarse en la tienda |
 | Google Analytics 4 | En progreso (`ga4/configuracion.md`): eventos llegando con `addons/qm_ga4_ecommerce` | Segmentos, exploraciones, 3 audiencias (ninguna de abandono de carrito), exportes y capturas |
 | RPA UiPath | Hecho (`rpa/QuetzalMartRPA/`, `rpa/README.md`): ensayo completo el 2026-10-09 con `carpeta_prueba` en 1 min (10 clientes, 8 productos, 5 existencias; verificado con la sección 9 y en la tienda). Usuario Robot RPA creado con `datos/14_configurar_rpa.py`. Los registros de prueba quedaron archivados | Resto de capturas de `evidencias/rpa/` (01 a 14). En la PC de la calificación: credencial `QuetzalMartRobotRPA`, extensión de Chrome con acceso a URL de archivos y sin el aviso de guardar contraseña |
