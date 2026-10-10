@@ -348,6 +348,58 @@ ORDER BY m.date DESC
 LIMIT 20;
 
 
--- =============================================================================
--- 9. RPA (pendiente: clientes y productos cargados por el robot)
--- =============================================================================
+-- -----------------------------------------------------------------------------
+-- 9. RPA: clientes, productos y existencias cargados por el robot de UiPath
+-- El robot importa con el usuario "Robot RPA" (datos/14_configurar_rpa.py), así que todo lo suyo
+-- tiene create_uid = ese usuario. Los productos guardan su External ID como __import__.<External ID>.
+-- -----------------------------------------------------------------------------
+
+-- 9.1 Resumen de la carga
+-- Esperado: la cantidad de clientes, productos y existencias que reportó el robot al terminar.
+WITH robot AS (SELECT id FROM res_users WHERE login = 'robot.rpa@quetzalmart.com')
+SELECT 'Clientes' AS tipo, count(*) AS cargados, min(p.create_date)::timestamp(0) AS desde, max(p.create_date)::timestamp(0) AS hasta
+FROM res_partner p WHERE p.create_uid = (SELECT id FROM robot)
+UNION ALL
+SELECT 'Productos', count(*), min(t.create_date)::timestamp(0), max(t.create_date)::timestamp(0)
+FROM product_template t WHERE t.create_uid = (SELECT id FROM robot)
+UNION ALL
+SELECT 'Productos publicados en la tienda', count(*), NULL, NULL
+FROM product_template t WHERE t.create_uid = (SELECT id FROM robot) AND t.is_published
+UNION ALL
+SELECT 'Ajustes de inventario', count(*), min(m.date)::timestamp(0), max(m.date)::timestamp(0)
+FROM stock_move m WHERE m.create_uid = (SELECT id FROM robot) AND m.is_inventory;
+
+-- 9.2 Clientes cargados por el robot
+SELECT p.name                       AS cliente,
+       CASE WHEN p.is_company THEN 'Empresa' ELSE 'Persona' END AS tipo,
+       p.email, p.phone, p.city,
+       c.code                       AS pais,
+       p.vat                        AS nit,
+       p.website                    AS sitio_web,
+       (SELECT string_agg(coalesce(cat.name->>'es_419', cat.name->>'en_US'), ', ')
+          FROM res_partner_res_partner_category_rel r
+          JOIN res_partner_category cat ON cat.id = r.category_id
+         WHERE r.partner_id = p.id)  AS etiquetas,
+       p.ref                        AS referencia,
+       p.create_date::timestamp(0)  AS cargado
+FROM res_partner p
+LEFT JOIN res_country c ON c.id = p.country_id
+WHERE p.create_uid = (SELECT id FROM res_users WHERE login = 'robot.rpa@quetzalmart.com')
+ORDER BY p.create_date, p.name;
+
+-- 9.3 Productos cargados por el robot, con su External ID y la cantidad a la mano
+SELECT d.name                                          AS external_id,
+       t.default_code                                  AS referencia,
+       coalesce(t.name->>'es_419', t.name->>'en_US')   AS producto,
+       t.type                                          AS tipo,
+       t.list_price                                    AS precio_q,
+       t.is_published                                  AS publicado,
+       coalesce((SELECT sum(q.quantity) FROM stock_quant q
+                   JOIN stock_location l ON l.id = q.location_id AND l.usage = 'internal'
+                   JOIN product_product pp ON pp.id = q.product_id
+                  WHERE pp.product_tmpl_id = t.id), 0)  AS cantidad_a_la_mano,
+       t.create_date::timestamp(0)                     AS cargado
+FROM product_template t
+LEFT JOIN ir_model_data d ON d.model = 'product.template' AND d.res_id = t.id AND d.module = '__import__'
+WHERE t.create_uid = (SELECT id FROM res_users WHERE login = 'robot.rpa@quetzalmart.com')
+ORDER BY t.create_date, d.name;

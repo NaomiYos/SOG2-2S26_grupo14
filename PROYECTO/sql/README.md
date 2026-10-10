@@ -9,7 +9,7 @@
 (`CUMPLE` / `FALTA`) y luego tiene una sección por módulo: ventas, cotizaciones, empleados, compras,
 materiales, facturas y gestor documental. La sección 8 cubre la tienda en línea (catálogo, pedidos web,
 clientes registrados, correos), el CRM y las facturas más recientes, que son las que se generan durante la calificación.
-La sección 9 queda para el RPA.
+La sección 9 muestra lo que cargó el robot de UiPath (usuario Robot RPA): clientes, productos con su External ID y existencias.
 
 ## Ejecutar
 
