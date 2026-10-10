@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="SLTsDAH12UiqkgdMaOJHiw" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" DesignTimeRectangle="113, 186, 125, 41" DesignTimeScaleFactor="1.25" ElementType="Button" ElementVisibilityArgument="Interactive" FuzzySelectorArgument="&lt;webctrl name='action_apply_all' tag='BUTTON' type='object' class='btn btn-secondary' aaname='Aplicar todo' matching:name='fuzzy' fuzzylevel:name='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' check:text='Aplicar todo' /&gt;" Guid="304467c2-c172-4cf1-a205-a9c3f68312c0" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" SearchSteps="FuzzySelector" Version="V6" WaitForReadyArgument="Interactive">
+      <TargetAnchorable.Anchors>
+        <scg:List x:TypeArguments="ITarget" Capacity="1">
+          <Target DesignTimeRectangle="127, 194, 97, 23" ElementType="Text" FuzzySelectorArgument="&lt;webctrl parentname='action_apply_all' tag='SPAN' type='' class='' aaname='Aplicar todo' matching:parentname='fuzzy' fuzzylevel:parentname='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' check:text='Aplicar todo' /&gt;" Guid="7364c94b-42f2-494a-b95f-6f29f12fd992" SearchSteps="FuzzySelector" />
+        </scg:List>
+      </TargetAnchorable.Anchors>
+      <imageRef attrName="InformativeScreenshot" originalValue="0f01bf7ea7e8d6067583c5246838f2a0.jpg" xmlns="">0kSqRRCZ5Z0KjtILpO7OdKA</imageRef>
+    </TargetAnchorable>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

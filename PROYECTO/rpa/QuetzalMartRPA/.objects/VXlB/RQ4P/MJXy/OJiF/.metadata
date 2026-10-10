@@ -1,0 +1,18 @@
+﻿{
+  "Name": "Correo Electronico",
+  "Description": "Campo de texto del correo electronico en el formulario de inicio de sesion",
+  "Type": "Element",
+  "TaxonomyType": "Input",
+  "Id": "OJiFRGI8XE60Kz7bbtqkMw",
+  "Reference": "P2FXscTZCUqK2EWmv8mH9g/OJiFRGI8XE60Kz7bbtqkMw",
+  "ParentRef": "P2FXscTZCUqK2EWmv8mH9g/MJXy68OfmUecLV9Ac2T85g",
+  "Created": "2026-10-10T01:05:27.7991028Z",
+  "Updated": "2026-10-10T01:25:12.3357284Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.5.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ],
+  "UpdatedBy": [
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

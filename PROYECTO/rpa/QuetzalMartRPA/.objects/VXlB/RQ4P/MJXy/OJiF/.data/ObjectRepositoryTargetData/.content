@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="ofjvKOFiPUeBpNEkttaG5Q" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" DesignTimeRectangle="782, 292, 375, 47" DesignTimeScaleFactor="1.25" ElementType="InputBox" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aria-role='form' tag='FORM' /&gt;&lt;webctrl id='login' tag='INPUT' type='text' class='form-control' placeholder='Correo electrónico' aaname='Correo electrónico Elija un usuario ' /&gt;" FuzzySelectorArgument="&lt;webctrl aria-role='form' tag='FORM' matching:aria-role='fuzzy' fuzzylevel:aria-role='0.0' /&gt;&lt;webctrl id='login' tag='INPUT' type='text' matching:id='fuzzy' fuzzylevel:id='0.0' /&gt;" Guid="dc1f8987-7fd6-456d-99b3-8557b300d4ca" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" SearchSteps="FuzzySelector" Version="V6" WaitForReadyArgument="Interactive">
+      <TargetAnchorable.Anchors>
+        <scg:List x:TypeArguments="ITarget" Capacity="0" />
+      </TargetAnchorable.Anchors>
+      <imageRef attrName="InformativeScreenshot" originalValue="1882860221d5642b279111edf180c2d4.jpg" xmlns="">0tKTfFvV4bk6VEjwZEOGkUw</imageRef>
+    </TargetAnchorable>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

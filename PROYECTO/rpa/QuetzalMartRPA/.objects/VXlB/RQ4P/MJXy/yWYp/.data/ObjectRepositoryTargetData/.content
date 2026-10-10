@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="786fYdfWmkmuFYvIOCAj1w" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" DesignTimeRectangle="782, 398, 375, 47" DesignTimeScaleFactor="1.25" ElementType="InputBoxPassword" ElementVisibilityArgument="Interactive" FuzzySelectorArgument="&lt;webctrl aria-role='form' tag='FORM' matching:aria-role='fuzzy' fuzzylevel:aria-role='0.0' /&gt;&lt;webctrl id='password' tag='INPUT' type='password' class='form-control' placeholder='Contraseña' aaname='Contraseña                 Restablecer contraseña' matching:id='fuzzy' fuzzylevel:id='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' /&gt;" Guid="201a9364-5273-405b-ba65-4dcabc866b7f" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" SearchSteps="FuzzySelector" Version="V6" WaitForReadyArgument="Interactive">
+      <TargetAnchorable.Anchors>
+        <scg:List x:TypeArguments="ITarget" Capacity="1">
+          <Target DesignTimeRectangle="782, 358, 375, 30" ElementType="Text" FuzzySelectorArgument="&lt;webctrl aaname='Contraseña                 ' tag='LABEL' type='' class='form-label d-flex justify-content-between' matching:aaname='fuzzy' fuzzylevel:aaname='0.0' matching:class='fuzzy' fuzzylevel:class='0.0' check:text='Contraseña&amp;#xA;                Restablecer contraseña' /&gt;" Guid="0841f13c-7466-411c-903d-1079a0388ce0" SearchSteps="FuzzySelector" />
+        </scg:List>
+      </TargetAnchorable.Anchors>
+      <imageRef attrName="InformativeScreenshot" originalValue="3aad205630396db11732ca0fd81f665d.jpg" xmlns="">0oI9evB_RBE-vn3Eq99qcLA</imageRef>
+    </TargetAnchorable>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

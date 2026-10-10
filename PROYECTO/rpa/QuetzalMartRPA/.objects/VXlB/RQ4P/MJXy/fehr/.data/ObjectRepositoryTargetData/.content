@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="z0BfktwOoUW9xs5hlmMx8w" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" DesignTimeRectangle="782, 486, 375, 47" DesignTimeScaleFactor="1.25" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aria-role='form' tag='FORM' /&gt;&lt;webctrl tag='BUTTON' type='submit' aaname='Iniciar sesión' /&gt;" Guid="b67f8af9-1eb1-4ffd-be64-7c2dc370c54c" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive">
+      <TargetAnchorable.Anchors>
+        <scg:List x:TypeArguments="ITarget" Capacity="0" />
+      </TargetAnchorable.Anchors>
+      <imageRef attrName="InformativeScreenshot" originalValue="f20bc8155081be66f37ddeaec15e9f3f.jpg" xmlns="">0T9hC28PbN0CBJoRJ2fOH0Q</imageRef>
+    </TargetAnchorable>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

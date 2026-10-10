@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Boton Iniciar Sesion",
+  "Description": "Boton Iniciar sesion que envia el formulario de login",
+  "Type": "Element",
+  "TaxonomyType": "Button",
+  "Id": "fehrftbKgUawLty43GRcmw",
+  "Reference": "P2FXscTZCUqK2EWmv8mH9g/fehrftbKgUawLty43GRcmw",
+  "ParentRef": "P2FXscTZCUqK2EWmv8mH9g/MJXy68OfmUecLV9Ac2T85g",
+  "Created": "2026-10-10T01:05:27.8812744Z",
+  "Updated": "2026-10-10T01:05:27.8812744Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.5.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

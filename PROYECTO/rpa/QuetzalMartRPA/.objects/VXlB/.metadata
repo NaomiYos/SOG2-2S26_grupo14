@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Odoo QuetzalMart",
+  "Description": "ERP Odoo 18 de QuetzalMart en la nube (sitio web y administración)",
+  "Type": "App",
+  "Id": "VXlBDBwDEEyjvVFNwaVeqQ",
+  "Reference": "P2FXscTZCUqK2EWmv8mH9g/VXlBDBwDEEyjvVFNwaVeqQ",
+  "Created": "2026-10-10T01:04:28.8541256Z",
+  "Updated": "2026-10-10T01:04:28.8541256Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.5.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

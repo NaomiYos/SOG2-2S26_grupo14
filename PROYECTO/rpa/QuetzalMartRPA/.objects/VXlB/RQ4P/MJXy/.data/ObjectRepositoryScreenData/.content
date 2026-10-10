@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryScreenData ContentHash="OrFFMxX020-2Ezlg9SiP8g" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryScreenData.Data>
+    <TargetApp x:Key="TargetApp" Area="-9, -9, 1938, 1158" BrowserType="Chrome" Selector="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" Url="https://34-234-220-225.sslip.io/web/login" Version="V3">
+      <imageRef attrName="InformativeScreenshot" originalValue="6c5b81ead56b83df55fe165ca479ed46.jpg" xmlns="">0_nSeSJOnCkeVN0f_OsJysQ</imageRef>
+    </TargetApp>
+    <NInteractionMode x:Key="InteractionMode">DebuggerApi</NInteractionMode>
+  </ObjectRepositoryScreenData.Data>
+</ObjectRepositoryScreenData>

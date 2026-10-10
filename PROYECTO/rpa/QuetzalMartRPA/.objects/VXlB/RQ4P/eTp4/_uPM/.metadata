@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Boton Importar",
+  "Description": "Boton Importar de la pantalla de importacion, carga el archivo validado",
+  "Type": "Element",
+  "TaxonomyType": "Button",
+  "Id": "_uPM4ROUAECMSispAq7s_Q",
+  "Reference": "P2FXscTZCUqK2EWmv8mH9g/_uPM4ROUAECMSispAq7s_Q",
+  "ParentRef": "P2FXscTZCUqK2EWmv8mH9g/eTp4epfSnE2wFWSuFK5WRw",
+  "Created": "2026-10-10T01:12:09.5068661Z",
+  "Updated": "2026-10-10T01:12:09.5068661Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.5.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

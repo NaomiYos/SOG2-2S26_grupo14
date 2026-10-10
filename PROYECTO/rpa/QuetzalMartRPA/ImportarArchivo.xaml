@@ -1,0 +1,261 @@
+<Activity mc:Ignorable="sap2010" x:Class="ImportarArchivo" this:ImportarArchivo.in_UrlOdoo="https://34-234-220-225.sslip.io" this:ImportarArchivo.in_Ruta="/odoo/contacts?view_type=list" this:ImportarArchivo.in_Archivo="C:\Users\nyavi\Desktop\ultimo semestre\geren 2\lab\proyecto\SOG2-2S26_grupo14\PROYECTO\rpa\salida\clientes.xlsx" this:ImportarArchivo.in_Nombre="clientes" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:sd1="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_UrlOdoo" Type="InArgument(x:String)" />
+    <x:Property Name="in_Ruta" Type="InArgument(x:String)" />
+    <x:Property Name="in_Archivo" Type="InArgument(x:String)" />
+    <x:Property Name="in_Nombre" Type="InArgument(x:String)" />
+  </x:Members>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>GlobalConstantsNamespace</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.Net.Mail</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="ImportarArchivo" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="rutaScript" />
+      <Variable x:TypeArguments="x:String" Name="listasAjustadas" />
+    </Sequence.Variables>
+    <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info">
+      <ui:LogMessage.Message>
+        <InArgument x:TypeArguments="x:Object">
+          <CSharpValue x:TypeArguments="x:Object">"Importando " + in_Nombre + " desde " + in_Archivo</CSharpValue>
+        </InArgument>
+      </ui:LogMessage.Message>
+    </ui:LogMessage>
+    <Assign DisplayName="Ruta del script de opciones" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">
+          <CSharpReference x:TypeArguments="x:String">rutaScript</CSharpReference>
+        </OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">
+          <CSharpValue x:TypeArguments="x:String">System.IO.Path.GetFullPath(System.IO.Path.Combine("js", "opciones_importacion.js"))</CSharpValue>
+        </InArgument>
+      </Assign.Value>
+    </Assign>
+    <uix:NApplicationCard AttachMode="ByInstance" CloseMode="Never" DisplayName="Use Browser Chrome: Odoo QuetzalMart" HealingAgentBehavior="Job" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InteractionMode="DebuggerApi" OpenMode="IfNotOpen" ScopeGuid="4b8e1f70-2c5d-4a93-b6e1-9f0a7c3d2e51" Version="V2">
+      <uix:NApplicationCard.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <uix:NGoToUrl DisplayName="Go To URL (lista de Odoo)" sap2010:WorkflowViewState.IdRef="NGoToUrl_1" Version="V5">
+              <uix:NGoToUrl.Url>
+                <InArgument x:TypeArguments="x:String">
+                  <CSharpValue x:TypeArguments="x:String">in_UrlOdoo + in_Ruta</CSharpValue>
+                </InArgument>
+              </uix:NGoToUrl.Url>
+            </uix:NGoToUrl>
+            <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click engrane 'Acciones'" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NClick_1" KeyModifiers="None" MouseButton="Left" Version="V5">
+              <uix:NClick.Target>
+                <uix:TargetAnchorable ContentHash="SOnRgibmREO__blv3CIqaw" DesignTimeRectangle="211, 196, 23, 21" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aria-expanded='false' data-hotkey='u' data-tooltip='Acciones' tag='BUTTON' /&gt;" Guid="0a174961-aca7-4ca3-9dbd-0296de23d065" InformativeScreenshot="0189830046b9c077e76c277f63e644fe.jpg" Reference="P2FXscTZCUqK2EWmv8mH9g/8BViq4DyLkmsBpTkIcFz5w" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+              </uix:NClick.Target>
+            </uix:NClick>
+            <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click 'Importar registros'" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NClick_2" KeyModifiers="None" MouseButton="Left" Version="V5">
+              <uix:NClick.Target>
+                <uix:TargetAnchorable ContentHash="m4B6MK-Hd0-6Ulo7jgSnrg" DesignTimeRectangle="212, 233, 217, 34" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aaname='Importar registros ' aria-role='menuitem' tag='SPAN' /&gt;" Guid="ed5c0e15-3b6d-491d-a453-8609fa675271" InformativeScreenshot="f50851cf73ad203dc918c6eece8c9a40.jpg" Reference="P2FXscTZCUqK2EWmv8mH9g/aG77jmR9Z0CCeTWnL-cVKg" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+              </uix:NClick.Target>
+            </uix:NClick>
+            <uix:NBrowserFilePickerScope DisplayName="Browser File Picker Scope (archivo a importar)" sap2010:WorkflowViewState.IdRef="NBrowserFilePickerScope_1" Version="V5" WaitForDialogToAppearTimeout="30">
+              <uix:NBrowserFilePickerScope.Body>
+                <Sequence DisplayName="Acciones que abren el selector de archivos" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                  <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click 'Subir archivo de datos'" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NClick_3" KeyModifiers="None" MouseButton="Left" Version="V5">
+                    <uix:NClick.Target>
+                      <uix:TargetAnchorable ContentHash="GsIqVEBY-0WfWB7D-XXUBw" DesignTimeRectangle="29, 185, 204, 41" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aaname='Subir archivo de datos' class='*btn-primary*' tag='BUTTON' /&gt;" Guid="c62d178e-e2f3-4e43-b65c-700c7a58afa0" InformativeScreenshot="c73364b0fccd4c468c9c0f04da799776.jpg" Reference="P2FXscTZCUqK2EWmv8mH9g/dRq4T_DBf0WBHNzCryZ6_g" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+                    </uix:NClick.Target>
+                  </uix:NClick>
+                </Sequence>
+              </uix:NBrowserFilePickerScope.Body>
+              <uix:NBrowserFilePickerScope.SingleFilePath>
+                <InArgument x:TypeArguments="x:String">
+                  <CSharpValue x:TypeArguments="x:String">in_Archivo</CSharpValue>
+                </InArgument>
+              </uix:NBrowserFilePickerScope.SingleFilePath>
+            </uix:NBrowserFilePickerScope>
+            <uix:NClick ActivateBefore="True" ClickType="Single" DelayBefore="3" DisplayName="Click 'Probar'" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NClick_4" KeyModifiers="None" MouseButton="Left" Version="V5">
+              <uix:NClick.Target>
+                <uix:TargetAnchorable ContentHash="E7LIXgTOGkad2dw6O9vtrA" DesignTimeRectangle="132, 185, 79, 41" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aaname='Probar' class='*btn-secondary*' tag='BUTTON' /&gt;" Guid="184bebe2-4c07-4e5c-bc60-692184c317a5" InformativeScreenshot="9c7270d7d1cb2619a059c25dcf28b514.jpg" Reference="P2FXscTZCUqK2EWmv8mH9g/j_Y3MHEVo0CE9PUPj_EQ0Q" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+              </uix:NClick.Target>
+            </uix:NClick>
+            <uix:NInjectJsScript InputParameter="{x:Null}" DelayBefore="4" DisplayName="Inject Js Script (opciones cuando un valor no coincide)" ExecutionWorld="Isolated" sap2010:WorkflowViewState.IdRef="NInjectJsScript_1" Version="V5">
+              <uix:NInjectJsScript.ScriptCode>
+                <InArgument x:TypeArguments="x:String">
+                  <CSharpValue x:TypeArguments="x:String">rutaScript</CSharpValue>
+                </InArgument>
+              </uix:NInjectJsScript.ScriptCode>
+              <uix:NInjectJsScript.ScriptOutput>
+                <OutArgument x:TypeArguments="x:String">
+                  <CSharpReference x:TypeArguments="x:String">listasAjustadas</CSharpReference>
+                </OutArgument>
+              </uix:NInjectJsScript.ScriptOutput>
+              <uix:NInjectJsScript.Target>
+                <uix:TargetAnchorable ContentHash="E7LIXgTOGkad2dw6O9vtrA" DesignTimeRectangle="132, 185, 79, 41" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aaname='Probar' class='*btn-secondary*' tag='BUTTON' /&gt;" Guid="184bebe2-4c07-4e5c-bc60-692184c317a5" InformativeScreenshot="9c7270d7d1cb2619a059c25dcf28b514.jpg" Reference="P2FXscTZCUqK2EWmv8mH9g/j_Y3MHEVo0CE9PUPj_EQ0Q" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+              </uix:NInjectJsScript.Target>
+            </uix:NInjectJsScript>
+            <If DisplayName="¿Se ajustaron opciones?" sap2010:WorkflowViewState.IdRef="If_1">
+              <If.Condition>
+                <InArgument x:TypeArguments="x:Boolean">
+                  <CSharpValue x:TypeArguments="x:Boolean">listasAjustadas != "0"</CSharpValue>
+                </InArgument>
+              </If.Condition>
+              <If.Then>
+                <Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info">
+                    <ui:LogMessage.Message>
+                      <InArgument x:TypeArguments="x:Object">
+                        <CSharpValue x:TypeArguments="x:Object">"Opciones ajustadas en " + listasAjustadas + " columnas; se vuelve a probar"</CSharpValue>
+                      </InArgument>
+                    </ui:LogMessage.Message>
+                  </ui:LogMessage>
+                  <uix:NClick ActivateBefore="True" ClickType="Single" DelayBefore="1" DisplayName="Click 'Probar' otra vez" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NClick_5" KeyModifiers="None" MouseButton="Left" Version="V5">
+                    <uix:NClick.Target>
+                      <uix:TargetAnchorable ContentHash="E7LIXgTOGkad2dw6O9vtrA" DesignTimeRectangle="132, 185, 79, 41" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aaname='Probar' class='*btn-secondary*' tag='BUTTON' /&gt;" Guid="184bebe2-4c07-4e5c-bc60-692184c317a5" InformativeScreenshot="9c7270d7d1cb2619a059c25dcf28b514.jpg" Reference="P2FXscTZCUqK2EWmv8mH9g/j_Y3MHEVo0CE9PUPj_EQ0Q" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+                    </uix:NClick.Target>
+                  </uix:NClick>
+                </Sequence>
+              </If.Then>
+            </If>
+            <uix:NCheckState DisplayName="Check App State: ¿Todo parece correcto?" HealingAgentBehavior="Disabled" sap2010:WorkflowViewState.IdRef="NCheckState_1" Version="V5">
+              <uix:NCheckState.IfExists>
+                <Sequence DisplayName="El objetivo aparece." sap2010:WorkflowViewState.IdRef="Sequence_5">
+                  <uix:NClick ActivateBefore="True" ClickType="Single" DisplayName="Click 'Importar'" HealingAgentBehavior="SameAsCard" sap2010:WorkflowViewState.IdRef="NClick_6" KeyModifiers="None" MouseButton="Left" Version="V5">
+                    <uix:NClick.Target>
+                      <uix:TargetAnchorable ContentHash="lvb756LNcECj35mtQfugwQ" DesignTimeRectangle="29, 185, 98, 41" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aaname='Importar' class='*btn-primary*' tag='BUTTON' /&gt;" Guid="334d98f5-4424-4925-b654-caafdec55755" InformativeScreenshot="51fd801d9d212f03a9b95a673182e2d9.jpg" Reference="P2FXscTZCUqK2EWmv8mH9g/_uPM4ROUAECMSispAq7s_Q" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+                    </uix:NClick.Target>
+                  </uix:NClick>
+                  <uix:NCheckState DisplayName="Check App State: esperar que vuelva la lista" HealingAgentBehavior="Disabled" sap2010:WorkflowViewState.IdRef="NCheckState_2" Version="V5">
+                    <uix:NCheckState.IfExists>
+                      <Sequence DisplayName="El objetivo aparece." sap2010:WorkflowViewState.IdRef="Sequence_7">
+                        <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info">
+                          <ui:LogMessage.Message>
+                            <InArgument x:TypeArguments="x:Object">
+                              <CSharpValue x:TypeArguments="x:Object">in_Nombre + " importados en Odoo"</CSharpValue>
+                            </InArgument>
+                          </ui:LogMessage.Message>
+                        </ui:LogMessage>
+                      </Sequence>
+                    </uix:NCheckState.IfExists>
+                    <uix:NCheckState.IfNotExists>
+                      <Sequence DisplayName="El objetivo no aparece." sap2010:WorkflowViewState.IdRef="Sequence_8">
+                        <Throw DisplayName="Throw" sap2010:WorkflowViewState.IdRef="Throw_1">
+                          <InArgument x:TypeArguments="s:Exception">
+                            <CSharpValue x:TypeArguments="s:Exception">new Exception("Odoo no terminó de importar " + in_Nombre + " en 2 minutos.")</CSharpValue>
+                          </InArgument>
+                        </Throw>
+                      </Sequence>
+                    </uix:NCheckState.IfNotExists>
+                    <uix:NCheckState.Target>
+                      <uix:TargetAnchorable ContentHash="SOnRgibmREO__blv3CIqaw" DesignTimeRectangle="211, 196, 23, 21" ElementType="Button" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aria-expanded='false' data-hotkey='u' data-tooltip='Acciones' tag='BUTTON' /&gt;" Guid="0a174961-aca7-4ca3-9dbd-0296de23d065" InformativeScreenshot="0189830046b9c077e76c277f63e644fe.jpg" Reference="P2FXscTZCUqK2EWmv8mH9g/8BViq4DyLkmsBpTkIcFz5w" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+                    </uix:NCheckState.Target>
+                    <uix:NCheckState.Timeout>
+                      <InArgument x:TypeArguments="x:Double">
+                        <CSharpValue x:TypeArguments="x:Double">120</CSharpValue>
+                      </InArgument>
+                    </uix:NCheckState.Timeout>
+                  </uix:NCheckState>
+                </Sequence>
+              </uix:NCheckState.IfExists>
+              <uix:NCheckState.IfNotExists>
+                <Sequence DisplayName="El objetivo no aparece." sap2010:WorkflowViewState.IdRef="Sequence_6">
+                  <Throw DisplayName="Throw" sap2010:WorkflowViewState.IdRef="Throw_2">
+                    <InArgument x:TypeArguments="s:Exception">
+                      <CSharpValue x:TypeArguments="s:Exception">new Exception("Odoo no validó el archivo de " + in_Nombre + ". Revise la pantalla de importación en Chrome.")</CSharpValue>
+                    </InArgument>
+                  </Throw>
+                </Sequence>
+              </uix:NCheckState.IfNotExists>
+              <uix:NCheckState.Target>
+                <uix:TargetAnchorable ContentHash="A_-070O7k0Gs8M_9QTPi7A" DesignTimeRectangle="415, 269, 178, 23" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aaname='Todo parece correcto.' tag='B' /&gt;" Guid="22c9e0bb-2915-4e73-bf83-86b0fd3fa6be" InformativeScreenshot="3523271f4d9c3a8c3b7e8224bf7ab0dd.jpg" Reference="P2FXscTZCUqK2EWmv8mH9g/NqHNAKQQzU2K9DfJnHMlfw" ScopeSelectorArgument="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive" />
+              </uix:NCheckState.Target>
+              <uix:NCheckState.Timeout>
+                <InArgument x:TypeArguments="x:Double">
+                  <CSharpValue x:TypeArguments="x:Double">30</CSharpValue>
+                </InArgument>
+              </uix:NCheckState.Timeout>
+            </uix:NCheckState>
+          </Sequence>
+        </ActivityAction>
+      </uix:NApplicationCard.Body>
+      <uix:NApplicationCard.OCREngine>
+        <ActivityFunc x:TypeArguments="sd:Image, scg:IEnumerable(scg:KeyValuePair(sd1:Rectangle, x:String))">
+          <ActivityFunc.Argument>
+            <DelegateInArgument x:TypeArguments="sd:Image" Name="Image" />
+          </ActivityFunc.Argument>
+        </ActivityFunc>
+      </uix:NApplicationCard.OCREngine>
+      <uix:NApplicationCard.TargetApp>
+        <uix:TargetApp Area="-9, -9, 1938, 1158" BrowserType="Chrome" ContentHash="bgPrJhBeSU6f2S9Ge1eWbw" InformativeScreenshot="26936d191842cdc77b5326edd0bce9bc.jpg" Reference="P2FXscTZCUqK2EWmv8mH9g/eTp4epfSnE2wFWSuFK5WRw" Selector="&lt;html app='chrome.exe' title='*' url='https://34-234-220-225.sslip.io/*' /&gt;" Url="https://34-234-220-225.sslip.io/odoo/contacts?view_type=list" Version="V3" />
+      </uix:NApplicationCard.TargetApp>
+    </uix:NApplicationCard>
+  </Sequence>
+</Activity>

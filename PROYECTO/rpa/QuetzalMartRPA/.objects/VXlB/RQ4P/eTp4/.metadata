@@ -1,0 +1,14 @@
+﻿{
+  "Name": "Odoo Backend",
+  "Description": "Vistas de lista e importacion del backend de Odoo QuetzalMart (/odoo/...)",
+  "Type": "Screen",
+  "Id": "eTp4epfSnE2wFWSuFK5WRw",
+  "Reference": "P2FXscTZCUqK2EWmv8mH9g/eTp4epfSnE2wFWSuFK5WRw",
+  "ParentRef": "P2FXscTZCUqK2EWmv8mH9g/RQ4PDSVhSE27FALlh_jVZQ",
+  "Created": "2026-10-10T01:09:33.9272061Z",
+  "Updated": "2026-10-10T01:09:33.9272061Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.5.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

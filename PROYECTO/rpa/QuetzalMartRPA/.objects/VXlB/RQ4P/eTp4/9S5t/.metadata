@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Boton Actualizar Cantidades",
+  "Description": "Boton Actualizar cantidades de la ventana de motivo del ajuste de inventario",
+  "Type": "Element",
+  "TaxonomyType": "Button",
+  "Id": "9S5twfK77EyIqQxTh_UqEQ",
+  "Reference": "P2FXscTZCUqK2EWmv8mH9g/9S5twfK77EyIqQxTh_UqEQ",
+  "ParentRef": "P2FXscTZCUqK2EWmv8mH9g/eTp4epfSnE2wFWSuFK5WRw",
+  "Created": "2026-10-10T01:15:03.2804932Z",
+  "Updated": "2026-10-10T01:15:03.2804932Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.5.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

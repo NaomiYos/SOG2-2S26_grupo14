@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Contrasena",
+  "Description": "Campo de contrasena en el formulario de inicio de sesion",
+  "Type": "Element",
+  "TaxonomyType": "Password",
+  "Id": "yWYpLz6jVUyJT-w0zTfWtQ",
+  "Reference": "P2FXscTZCUqK2EWmv8mH9g/yWYpLz6jVUyJT-w0zTfWtQ",
+  "ParentRef": "P2FXscTZCUqK2EWmv8mH9g/MJXy68OfmUecLV9Ac2T85g",
+  "Created": "2026-10-10T01:05:27.8440802Z",
+  "Updated": "2026-10-10T01:05:27.8440802Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=26.10.5.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=26.4.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

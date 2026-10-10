@@ -5,6 +5,13 @@ PROYECTO/infra/config/odoo.conf
 
 # Generados (se regeneran con PROYECTO/datos/08_exportar_facturas.py)
 PROYECTO/facturas_pdf/
+# RPA: carpeta de prueba (PROYECTO/rpa/generador/generar_carpetas.py) y archivos que produce el robot
+PROYECTO/rpa/carpeta_prueba/
+PROYECTO/rpa/salida/
+# RPA: temporales de Studio y guías que genera UiPath para agentes de código
+PROYECTO/rpa/QuetzalMartRPA/~*.xaml
+PROYECTO/rpa/QuetzalMartRPA/AGENTS.md
+PROYECTO/rpa/QuetzalMartRPA/CLAUDE.md
 # Módulos OCA (se descargan con PROYECTO/infra/obtener_addons.sh)
 PROYECTO/addons/oca/
 
