@@ -1,8 +1,9 @@
-"""Paso 7: 40 cotizaciones (sin confirmar).
+"""Paso 7: 50 cotizaciones (sin confirmar).
 
-- 20 cotizaciones de venta a clientes (presupuestos), con 30 días de validez.
-- 20 solicitudes de presupuesto a proveedores.
-El auxiliar aclaró en el foro que son 20 de venta y 20 de compra, no 20 en total.
+- 25 cotizaciones de venta a clientes (presupuestos), con 30 días de validez.
+- 25 solicitudes de presupuesto a proveedores.
+El auxiliar aclaró en el foro que son 20 de venta y 20 de compra, no 20 en total. Se cargan 25 de cada una
+para que el mínimo se siga cumpliendo si alguien confirma una cotización durante la calificación.
 La mitad de cada grupo queda marcada como enviada y el resto en borrador.
 Fechas entre el 1 de septiembre y el 4 de octubre de 2026. Idempotente.
 Requiere 02_datos_maestros.py y 04_materiales.py.
@@ -14,12 +15,15 @@ from datetime import date, timedelta
 from catalogo import CATEGORIAS, CATEGORIAS_MATERIAL, MATERIALES, PRODUCTOS, clientes, codigo_material, codigo_producto
 from odoo_cliente import Odoo
 
-A_CLIENTES = 20
-A_PROVEEDORES = 20
+A_CLIENTES = 25
+A_PROVEEDORES = 25
 # Las primeras 12 y 8 se generaron con una sola semilla (clientes y luego proveedores). Se conservan
 # en ese orden y las nuevas usan otra semilla, para que volver a cargar no cambie las ya existentes.
+# Lo mismo con el margen de 5 y 5 agregado después de las 20 y 20 (tercera semilla).
 ORIGINALES_CLIENTES = 12
 ORIGINALES_PROVEEDORES = 8
+PRIMERAS_CLIENTES = 20
+PRIMERAS_PROVEEDORES = 20
 INICIO = date(2026, 9, 1)
 DIAS = 34
 
@@ -87,10 +91,16 @@ def main():
         cotizaciones.a_proveedor(n, originales)
 
     nuevas = random.Random(2020)
-    for n in range(ORIGINALES_CLIENTES + 1, A_CLIENTES + 1):
+    for n in range(ORIGINALES_CLIENTES + 1, PRIMERAS_CLIENTES + 1):
         cotizaciones.a_cliente(n, nuevas)
-    for n in range(ORIGINALES_PROVEEDORES + 1, A_PROVEEDORES + 1):
+    for n in range(ORIGINALES_PROVEEDORES + 1, PRIMERAS_PROVEEDORES + 1):
         cotizaciones.a_proveedor(n, nuevas)
+
+    margen = random.Random(2025)
+    for n in range(PRIMERAS_CLIENTES + 1, A_CLIENTES + 1):
+        cotizaciones.a_cliente(n, margen)
+    for n in range(PRIMERAS_PROVEEDORES + 1, A_PROVEEDORES + 1):
+        cotizaciones.a_proveedor(n, margen)
 
     print(f"Cotizaciones: {A_CLIENTES} a clientes y {A_PROVEEDORES} a proveedores (la mitad enviadas)")
 
