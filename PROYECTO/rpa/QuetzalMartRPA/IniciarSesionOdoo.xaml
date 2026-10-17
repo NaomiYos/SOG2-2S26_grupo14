@@ -80,6 +80,8 @@
   <Sequence DisplayName="Iniciar sesión en Odoo" sap:VirtualizedContainerService.HintSize="931.6,1391.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="ui:PasswordCredentials" Name="credencial" />
+      <Variable x:TypeArguments="x:Int32" Default="0" Name="intento" />
+      <Variable x:TypeArguments="x:Boolean" Default="False" Name="sesionIniciada" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -114,6 +116,7 @@
                 </InArgument>
               </uix:NGoToUrl.Url>
             </uix:NGoToUrl>
+<DoWhile DisplayName="Iniciar sesión (hasta 3 intentos)" sap2010:WorkflowViewState.IdRef="DoWhile_1"><DoWhile.Condition><CSharpValue x:TypeArguments="x:Boolean">!sesionIniciada &amp;&amp; intento &lt; 3</CSharpValue></DoWhile.Condition><Sequence DisplayName="Intento de inicio de sesión" sap2010:WorkflowViewState.IdRef="Sequence_11"><Assign DisplayName="Contar intento" sap2010:WorkflowViewState.IdRef="Assign_1"><Assign.To><OutArgument x:TypeArguments="x:Int32"><CSharpReference x:TypeArguments="x:Int32">intento</CSharpReference></OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:Int32"><CSharpValue x:TypeArguments="x:Int32">intento + 1</CSharpValue></InArgument></Assign.Value></Assign>
             <uix:NGoToUrl DisplayName="Go To URL (login, espera a que cargue)" DelayBefore="1" sap2010:WorkflowViewState.IdRef="NGoToUrl_2" Version="V5">
               <uix:NGoToUrl.Url>
                 <InArgument x:TypeArguments="x:String">
@@ -158,22 +161,13 @@
               </uix:NCheckState.Target>
               <uix:NCheckState.Timeout>
                 <InArgument x:TypeArguments="x:Double">
-                  <CSharpValue x:TypeArguments="x:Double">30</CSharpValue>
+                  <CSharpValue x:TypeArguments="x:Double">15</CSharpValue>
                 </InArgument>
               </uix:NCheckState.Timeout>
-              <uix:NCheckState.IfExists>
-                <Sequence DisplayName="El objetivo desaparece." sap2010:WorkflowViewState.IdRef="Sequence_9" />
-              </uix:NCheckState.IfExists>
-              <uix:NCheckState.IfNotExists>
-                <Sequence DisplayName="El objetivo no desaparece." sap2010:WorkflowViewState.IdRef="Sequence_10">
-                  <Throw DisplayName="Throw" sap2010:WorkflowViewState.IdRef="Throw_1">
-                    <InArgument x:TypeArguments="s:Exception">
-                      <CSharpValue x:TypeArguments="s:Exception">new Exception("Odoo no aceptó el inicio de sesión de " + credencial.Username + ". Revise la credencial QuetzalMartRobotRPA.")</CSharpValue>
-                    </InArgument>
-                  </Throw>
-                </Sequence>
-              </uix:NCheckState.IfNotExists>
+              <uix:NCheckState.IfExists><Sequence DisplayName="El objetivo desaparece." sap2010:WorkflowViewState.IdRef="Sequence_9"><Assign DisplayName="Sesión iniciada" sap2010:WorkflowViewState.IdRef="Assign_2"><Assign.To><OutArgument x:TypeArguments="x:Boolean"><CSharpReference x:TypeArguments="x:Boolean">sesionIniciada</CSharpReference></OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:Boolean"><CSharpValue x:TypeArguments="x:Boolean">true</CSharpValue></InArgument></Assign.Value></Assign></Sequence></uix:NCheckState.IfExists><uix:NCheckState.IfNotExists><Sequence DisplayName="El objetivo no desaparece." sap2010:WorkflowViewState.IdRef="Sequence_10"><ui:LogMessage DisplayName="Log Message (reintento)" Level="Warn" sap2010:WorkflowViewState.IdRef="LogMessage_3"><ui:LogMessage.Message><InArgument x:TypeArguments="x:Object"><CSharpValue x:TypeArguments="x:Object">"El inicio de sesión no respondió (intento " + intento + " de 3); se vuelve a intentar"</CSharpValue></InArgument></ui:LogMessage.Message></ui:LogMessage></Sequence></uix:NCheckState.IfNotExists>
             </uix:NCheckState>
+</Sequence></DoWhile>
+<If DisplayName="¿No se pudo iniciar sesión?" sap2010:WorkflowViewState.IdRef="If_1"><If.Condition><InArgument x:TypeArguments="x:Boolean"><CSharpValue x:TypeArguments="x:Boolean">!sesionIniciada</CSharpValue></InArgument></If.Condition><If.Then><Sequence DisplayName="Then" sap2010:WorkflowViewState.IdRef="Sequence_12"><Throw DisplayName="Throw" sap2010:WorkflowViewState.IdRef="Throw_1"><InArgument x:TypeArguments="s:Exception"><CSharpValue x:TypeArguments="s:Exception">new Exception("Odoo no aceptó el inicio de sesión de " + credencial.Username + " en 3 intentos. Revise la credencial QuetzalMartRobotRPA.")</CSharpValue></InArgument></Throw></Sequence></If.Then></If>
           </Sequence>
         </ActivityAction>
       </uix:NApplicationCard.Body>
