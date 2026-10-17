@@ -79,7 +79,8 @@ def pago_de_prueba(odoo):
     proveedor = odoo.search("payment.provider", [("code", "=", "demo")], context={"active_test": False})
     if not proveedor:
         raise SystemExit("No existe el proveedor de pago Demostración: revise la instalación de payment_demo")
-    odoo.write("payment.provider", proveedor, {"state": "test", "is_published": True})
+    # Sin pago exprés: en el carrito mostraría un botón "Pagar con demostración" que salta el checkout.
+    odoo.write("payment.provider", proveedor, {"state": "test", "is_published": True, "allow_express_checkout": False})
     # Nombre traducible: se escribe en inglés y en el español de la tienda. La tienda muestra el del
     # método de pago y, debajo, "Asegurado por <proveedor>".
     metodo = odoo.search("payment.method", [("code", "=", "demo")], context={"active_test": False})
