@@ -400,22 +400,24 @@ LIMIT 10;
 -- 9. RPA: clientes, productos y existencias cargados por el robot de UiPath
 -- El robot importa con el usuario "Robot RPA" (datos/14_configurar_rpa.py), así que todo lo suyo
 -- tiene create_uid = ese usuario. Los productos guardan su External ID como __import__.<External ID>.
+-- Solo cuenta registros activos: los de los ensayos previos quedaron archivados y no se mezclan con la calificación.
 -- -----------------------------------------------------------------------------
 
 -- 9.1 Resumen de la carga
 -- Esperado: la cantidad de clientes, productos y existencias que reportó el robot al terminar.
 WITH robot AS (SELECT id FROM res_users WHERE login = 'robot.rpa@quetzalmart.com')
 SELECT 'Clientes' AS tipo, count(*) AS cargados, min(p.create_date)::timestamp(0) AS desde, max(p.create_date)::timestamp(0) AS hasta
-FROM res_partner p WHERE p.create_uid = (SELECT id FROM robot)
+FROM res_partner p WHERE p.create_uid = (SELECT id FROM robot) AND p.active
 UNION ALL
 SELECT 'Productos', count(*), min(t.create_date)::timestamp(0), max(t.create_date)::timestamp(0)
-FROM product_template t WHERE t.create_uid = (SELECT id FROM robot)
+FROM product_template t WHERE t.create_uid = (SELECT id FROM robot) AND t.active
 UNION ALL
 SELECT 'Productos publicados en la tienda', count(*), NULL, NULL
-FROM product_template t WHERE t.create_uid = (SELECT id FROM robot) AND t.is_published
+FROM product_template t WHERE t.create_uid = (SELECT id FROM robot) AND t.active AND t.is_published
 UNION ALL
 SELECT 'Ajustes de inventario', count(*), min(m.date)::timestamp(0), max(m.date)::timestamp(0)
-FROM stock_move m WHERE m.create_uid = (SELECT id FROM robot) AND m.is_inventory;
+FROM stock_move m WHERE m.create_uid = (SELECT id FROM robot) AND m.is_inventory
+  AND m.product_id IN (SELECT id FROM product_product WHERE active);
 
 -- 9.2 Clientes cargados por el robot
 SELECT p.name                       AS cliente,
@@ -432,7 +434,7 @@ SELECT p.name                       AS cliente,
        p.create_date::timestamp(0)  AS cargado
 FROM res_partner p
 LEFT JOIN res_country c ON c.id = p.country_id
-WHERE p.create_uid = (SELECT id FROM res_users WHERE login = 'robot.rpa@quetzalmart.com')
+WHERE p.create_uid = (SELECT id FROM res_users WHERE login = 'robot.rpa@quetzalmart.com') AND p.active
 ORDER BY p.create_date, p.name;
 
 -- 9.3 Productos cargados por el robot, con su External ID y la cantidad a la mano
@@ -449,5 +451,5 @@ SELECT d.name                                          AS external_id,
        t.create_date::timestamp(0)                     AS cargado
 FROM product_template t
 LEFT JOIN ir_model_data d ON d.model = 'product.template' AND d.res_id = t.id AND d.module = '__import__'
-WHERE t.create_uid = (SELECT id FROM res_users WHERE login = 'robot.rpa@quetzalmart.com')
+WHERE t.create_uid = (SELECT id FROM res_users WHERE login = 'robot.rpa@quetzalmart.com') AND t.active
 ORDER BY t.create_date, d.name;
