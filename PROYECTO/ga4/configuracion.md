@@ -136,17 +136,19 @@ Se crean dentro de una exploración: Explorar > (exploración) > Segmentos > **+
    artículo*, valores *Ingresos de artículos* y *Artículos comprados*, con los segmentos de eventos *Compras* y
    *Agregados al carrito*.
 
-## 6. Audiencias (3)
+## 6. Audiencias (3 personalizadas, ninguna de abandono de carrito)
 
-Administrar > Audiencias > Audiencia nueva.
+Administrar > Audiencias. Rúbrica 1.26: 3 audiencias, al menos 1 personalizada, y **la de abandono de carrito no cuenta**.
+Creadas el 2026-10-09 (detalle y capturas en `Manual3_GA4.md`, sección 10), con duración de afiliación de 30 días:
 
-| Audiencia | Tipo | Definición |
-|---|---|---|
-| Compradores | Sugerida (*Compradores*) | Usuarios con `purchase` |
-| Usuarios recientes de la tienda | Sugerida (*Usuarios recientemente activos*) | Activos en los últimos 7 días |
-| **Abandonaron el carrito (7 días)** | **Personalizada** | Incluir usuarios con `add_to_cart`; excluir de forma temporal a quienes tengan `purchase`; duración de pertenencia 7 días |
+| Audiencia | Definición |
+|---|---|
+| Compradores QuetzalMart | Usuarios con `purchase` |
+| Llegaron por correo | Usuarios con `view_item` y *Primera fuente del usuario* = `email` |
+| Clientes de alto valor | Usuarios con `purchase` y `value` > 200 (GTQ) |
 
-Las audiencias empiezan a acumular usuarios desde su creación (no hacia atrás): crearlas el primer día.
+Los pedidos de la tienda rondan Q35-Q55 con envío: *Clientes de alto valor* solo tendrá usuarios si alguien compra más
+de Q200 (varios productos). Las audiencias acumulan usuarios desde su creación, no hacia atrás.
 
 ## 7. Exportes
 
