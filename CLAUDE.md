@@ -152,7 +152,7 @@ Verificado en el servidor el 2026-10-09 (consultas de `sql/consultas_calificacio
 | ERP: compañía en GTQ, plan GT, IVA 12 %, almacenes GT / MX / SV | Hecho (`datos/01_configurar_erp.py`, ya con las correcciones de `try_loading` y GTQ) | Capturas de `evidencias/modulos/` |
 | Datos maestros, 35 empleados / 6 cargos / 5 departamentos, 60 materiales | Hecho (`datos/02` a `04`) | Capturas |
 | 150 ventas, 100 compras con factura, 150 facturas de cliente y sus PDF | Hecho (`datos/05`, `06`, `08`) | Repetir capturas 05, 06 y 11 de `evidencias/carga_masiva/` |
-| Cotizaciones: 20 de venta y 20 de compra | Hecho (`datos/07_cotizaciones.py`, ejecutado en el servidor) | Capturas |
+| Cotizaciones: 25 de venta y 25 de compra (mínimo 20 y 20, con margen) | Hecho (`datos/07_cotizaciones.py`, ejecutado en el servidor el 2026-10-16) | Capturas |
 | Gestor documental (OCA `dms`): 15 documentos y 155 facturas de cliente, 4 carpetas, 13 etiquetas | Hecho (`datos/09` y `15`); las facturas de la tienda llegan solas a "Facturas de clientes" | Capturas del filtrado por etiquetas |
 | Consultas SQL | Secciones 0 a 9 hechas y probadas en el servidor | — |
 | Tienda: 60 productos `QM-` publicados con imagen, descripción y precio con IVA; envío estándar Q30; tarjeta en modo de prueba y transferencia bancaria | Hecho (`datos/10`, `11`, `15` + configuración en pantalla); compra con tarjeta probada el 2026-10-09 (S00189, factura pagada) | Capturas en `evidencias/tienda/` |
